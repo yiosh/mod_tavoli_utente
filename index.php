@@ -1,5 +1,5 @@
 <?php
-  require('config/query.config.php');
+  require('./config/query.config.php');
 ?>
 
 <!DOCTYPE html>
@@ -94,16 +94,15 @@
         <input type="button" class="btn btn-sposa" id="btn-sposa" value="Sposa"> -->
       </div>
       <div id="table-container" class="table-container">
-        <?php foreach($tables as $table) : ?>
-          <div class="table">
+        <?php foreach($row_tavoli as $table) : ?>
+          <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['id']; ?>">
             <div class="table-header">
               <p class="table-id" hidden><?php echo $table['id']; ?></p>
               <p class="table-name"><strong><?php echo $table['nome_tavolo']; ?></strong></p>
             </div>
             <div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">
               <?php
-              $rows = $queryGuests->rowCount();
-                foreach($guests as $guest) : ?>
+                foreach($res_commensali as $guest) : ?>
                   <?php if ($guest['tavolo_id'] > 0) : ?>
                     <?php if ($guest['tavolo_id'] == $table['id']) : ?>
                       <div id="<?php echo $guest['id'] ?>" class="guest" >
@@ -179,7 +178,10 @@
             <p class="form-input">
               <label class="label">Table Name</label>
               <br>
-              <input class="form-text" id="input-table-name" name="nome_tavolo" required type="text">
+              <select name="nome_tavolo" id="input-table-name">
+                <option value="SPOSO">SPOSO</option>
+                <option value="SPOSA">SPOSA</option>
+              </select>
             </p>
             <div class="submit">
               <button type="submit" class="btn" id="submit-table" name="submit-table" >Submit</button>

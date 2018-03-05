@@ -116,90 +116,13 @@ $(document).ready(() => {
 
   $('.sposi-radio').change(() => {
     if ($('#tutti').is(':checked')) {
-      $('#table-container').html('');
-      fetch('./includes/tables_query__tutti.php')
-        .then(response => response.json()) // Translate JSON into JavaScript
-        .then(content => {
-          content.forEach(data => {
-            $('#table-container').append(`
-            <div class="table">
-            <div class="table-header">
-              <p class="table-id" hidden>${data.id}</p>
-              <p class="table-name"><strong>${data.nome_tavolo}</strong></p>
-            </div>
-            <div class="table-body connectedSortable" data-rel="${data.id}">
-            </div>`);
-          });
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
-
-      fetch('./includes/tables_query__tutti.php')
-        .then(response => response.json()) // Translate JSON into JavaScript
-        .then(content => {
-          content.forEach(data => {
-            $('#table-container').append(`
-            <div class="table">
-            <div class="table-header">
-              <p class="table-id" hidden>${data.id}</p>
-              <p class="table-name"><strong>${data.nome_tavolo}</strong></p>
-            </div>
-            <div class="table-body connectedSortable" data-rel="${data.id}">
-            </div>`);
-          });
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
+      $('.table').show();
     } else if ($('#sposo').is(':checked')) {
-      $('#table-container').html('');
-      // const table = document.createElement('div');
-      // const tableHeader = document.createElement('div');
-      // const tableId = document.createElement('p');
-      // const tableName = document.createElement('p');
-      // const tableBody = document.createElement('div');
-
-      // Fetch users assigned and show them in guest-list div
-      fetch('./includes/tables_query__sposo.php')
-        .then(response => response.json()) // Translate JSON into JavaScript
-        .then(content => {
-          content.forEach(data => {
-            $('#table-container').append(`
-            <div class="table">
-            <div class="table-header">
-              <p class="table-id" hidden>${data.id}</p>
-              <p class="table-name"><strong>${data.nome_tavolo}</strong></p>
-            </div>
-            <div class="table-body connectedSortable" data-rel="${data.id}">
-            </div>`);
-            // table.className = 'table';
-            // tableHeader.className = 'table-header';
-            // tableId.className = 'table-id';
-            // tableId.textContent = $data.id;
-            // tableId.setAttribute('hidden');
-            // tableName.textContent = data.nome_tavolo;
-            // tableBody.className = 'table-body connectedSortable';
-            // tableBody.setAttribute('data-rel', data.id);
-
-            // tableHeader.appendChild(tableId);
-            // tableHeader.appendChild(tableName);
-
-            // table.appendChild(tableHeader);
-            // table.appendChild(tableBody);
-
-            // document.getElementById('table-container').appendChild(table);
-            // fragment.appendChild(`
-            // <div class="table">
-            // <div class="table-header">
-            //   <p class="table-id" hidden><?php echo $table['id']; ?></p>
-            //   <p class="table-name"><strong><?php echo $table['nome_tavolo']; ?></strong></p>
-            //   <div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">`);
-          });
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
+      $('.table').hide();
+      $('.table[data-rel*="SPOSO"]').show();
+    } else if ($('#sposa').is(':checked')) {
+      $('.table').hide();
+      $('.table[data-rel*="SPOSA"]').show();
     }
   });
 });

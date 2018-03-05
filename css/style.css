@@ -148,7 +148,7 @@ select::-ms-expand {
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   background-color: #897474;
-  overflow-y: auto;
+  overflow: auto;
 }
 
 .guest {
@@ -161,6 +161,7 @@ select::-ms-expand {
   text-align: center;
   color: #5f4a4a;
   padding: 1rem;
+  overflow: auto;
 }
 
 .assigned-toggle input[type="radio"],

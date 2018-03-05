@@ -1,5 +1,5 @@
 {
-  "extends": ["airbnb", "prettier"],
+  "extends": ["google", "prettier"],
   "parser": "babel-eslint",
   "parserOptions": {
     "ecmaVersion": 8,
@@ -84,5 +84,5 @@
       }
     ]
   },
-  "plugins": ["react", "prettier"]
+  "plugins": ["prettier"]
 }

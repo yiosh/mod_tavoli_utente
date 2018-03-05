@@ -5,7 +5,6 @@
   box-sizing: border-box;
 }
 html {
-  
   font-family: sans-serif;
   font-size: 12px;
   margin: 0;
@@ -16,7 +15,7 @@ body {
   margin: 0;
 }
 
-[draggable='true'] {
+[draggable="true"] {
   cursor: move;
 }
 
@@ -134,8 +133,8 @@ body {
   padding: 1rem;
 }
 
-
-.toggle input[type='radio'] {
+.assigned-toggle input[type="radio"],
+.sposi-radio input[type="radio"] {
   display: none;
 }
 
@@ -145,13 +144,19 @@ body {
   padding-top: 1em;
 }
 
-.assign-btns input[type='radio'] {
+.assign-btns input[type="radio"],
+.sposi-radio input[type="radio"] {
   display: none;
 }
 
-.assign-btns input:checked + span {
+.assign-btns input:checked + span,
+.sposi-radio input:checked + span {
   background-color: #404040;
   color: #f7f7f7;
+}
+
+.sposi-radio {
+  display: inline;
 }
 
 /* TABLE SECTION */
@@ -204,7 +209,7 @@ body {
   min-height: 12rem;
   max-height: 17.5rem;
   min-width: 10rem;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 /* MODAL */
@@ -306,7 +311,8 @@ form {
   cursor: pointer;
 }
 
-.guest , .guest > p {
+.guest,
+.guest > p {
   cursor: pointer;
 }
 
@@ -346,7 +352,7 @@ form {
     grid-template-rows: 1fr;
     grid-template-columns: 30% 69.3%;
     grid-auto-flow: column;
-    grid-column-gap: .7%;
+    grid-column-gap: 0.7%;
     margin: 0;
   }
 
@@ -362,7 +368,6 @@ form {
   #input-adults,
   #input-babies,
   #input-highchair {
-    height: 1.25em;
     padding: 0.5em;
   }
 
@@ -384,9 +389,9 @@ form {
     overflow-x: hidden;
     overflow-y: auto;
     margin-top: 0;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     padding-bottom: 1em;
-    margin-bottom: 1rem,
+    margin-bottom: 1rem;
   }
 
   .table-body {
@@ -400,6 +405,6 @@ form {
   }
 
   .assign-btns .btn {
-    padding: .8em;
+    padding: 0.8em;
   }
 }

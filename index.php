@@ -44,22 +44,20 @@
       </div>
       <!-- GUEST LIST SECTION -->
       <div id="guest-list" class="guest-list connectedSortable">
-        <?php foreach($guests as $guest) : ?>
-          <?php if ($guest['id'] > 0 && $guest['tavolo_id'] == 0) : ?>
-            <div class="guest" id="<?php echo $guest['id'] ?>">
-              <p class="family-name"><?php echo $guest['nome'].' '.$guest['cognome'] ?></p>
-              <p class="number-adults"><?php echo $guest['adulti'] ?></p>
-              <p class="number-babies"><?php echo $guest['bambini'] ?></p>
-              <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
-              <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
-            </div>
-          <?php endif; ?>
+        <?php foreach($result_commensali as $guest) : ?>
+          <div class="guest" id="<?php echo $guest['id'] ?>"  tavolo-id="<?php echo $guest['tavolo_id'] ?>">
+            <p class="family-name"><?php echo $guest['nome'].' '.$guest['cognome'] ?></p>
+            <p class="number-adults"><?php echo $guest['adulti'] ?></p>
+            <p class="number-babies"><?php echo $guest['bambini'] ?></p>
+            <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
+            <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
+          </div>
         <?php endforeach; ?> 
       </div>
 
       <div class="assign-btns">
         <label for="to-assign">
-          <input type="radio" id="to-assign" name="assigned-toggle" checked>
+          <input type="radio" id="to-assign" name="assigned-toggle">
           <span class="btn toggle-btn">To Assign</span>
         </label>
         <label for="assigned">
@@ -94,7 +92,7 @@
         <input type="button" class="btn btn-sposa" id="btn-sposa" value="Sposa"> -->
       </div>
       <div id="table-container" class="table-container">
-        <?php foreach($row_tavoli as $table) : ?>
+        <?php foreach($result_tavoli as $table) : ?>
           <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['id']; ?>">
             <div class="table-header">
               <p class="table-id" hidden><?php echo $table['id']; ?></p>
@@ -102,10 +100,10 @@
             </div>
             <div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">
               <?php
-                foreach($res_commensali as $guest) : ?>
+                foreach($result_commensali as $guest) : ?>
                   <?php if ($guest['tavolo_id'] > 0) : ?>
                     <?php if ($guest['tavolo_id'] == $table['id']) : ?>
-                      <div id="<?php echo $guest['id'] ?>" class="guest" >
+                      <div id="<?php echo $guest['id'] ?>" tavolo-id="<?php echo $guest['tavolo_id'] ?>" class="guest" >
                         <p class="family-name"><?php echo $guest['nome']." ".$guest['cognome'] ?></p>
                         <p class="number-adults"><?php echo $guest['adulti'] ?></p>
                         <p class="number-babies"><?php echo $guest['bambini'] ?></p>

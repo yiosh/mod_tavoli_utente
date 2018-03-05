@@ -11,17 +11,9 @@
 
   /* Check connection */
   if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
   }
-
-  /* Check if server is alive */
-  if (mysqli_ping($conn)) {
-    printf ("Our connection is ok!\n");
-  } else {
-    printf ("Error: %s\n", mysqli_error($conn));
-  }
-
-  /* Close connection */
-  // mysqli_close($conn);
+  // } else {
+  //   echo "Success!";
+  // }
 ?>

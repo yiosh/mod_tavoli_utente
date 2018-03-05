@@ -2,11 +2,14 @@
   require('db.config.php');
   // Create Query
 
-  $res_tavoli = mysqli_query($conn, "SELECT * FROM fl_tavoli WHERE id > 1");
-  $row_tavoli = mysqli_fetch_assoc($res_tavoli);
+  $query_tavoli = "SELECT * FROM fl_tavoli WHERE id > 1";
+  $result_tavoli = mysqli_query($conn, $query_tavoli);
+  $array_tavoli = mysqli_fetch_assoc($result_tavoli);
 
-  $res_commensali = mysqli_query($conn, "SELECT * FROM fl_tavoli_commensali WHERE id > 1");
-  $row_commensali = mysqli_fetch_assoc($res_commensali);
+  $query_commensali = "SELECT * FROM fl_tavoli_commensali WHERE id > 1";
+  $result_commensali = mysqli_query($conn, $query_commensali);
+  $array_commensali = mysqli_fetch_assoc($result_commensali);
+
 
 
   // $queryTables = $conn->prepare('SELECT * FROM fl_tavoli WHERE id > 1');

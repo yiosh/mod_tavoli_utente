@@ -11,10 +11,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Tableau Manager</title>
   <link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css">
+  <link href="css/toastr.min.css" rel="stylesheet" type="text/css">
   <link href="css/style.css" rel="stylesheet" type="text/css">
   <script defer src="js/fontawesome-all.js"></script>
   <script src="js/jquery-3.2.1.min.js"></script>
   <script src="js/jquery-ui.min.js"></script>
+  <script src="js/toastr.min.js"></script>
   <script src="js/script.js"></script>
 </head>
 
@@ -127,7 +129,7 @@
         <div class="modal-content">
           <i id="close1" class="close-btn fas fa-times"></i>
           <!-- <span class="close-btn">&times;</span> -->
-          <form method="POST" action="./includes/guests_submit.php">
+          <form method="POST" action="api/guests_submit.php">
             <h3><i class="far fa-address-card"></i> Add Guest</h3>
             <br>
             <div id="message"></div>
@@ -170,7 +172,7 @@
       <div id="add-table-modal" class="modal">
         <div class="modal-content">
           <i id="close2" class="close-btn fas fa-times"></i>
-          <form method="POST" action="./includes/tables_submit.php">
+          <form method="POST" action="api/tables_submit.php">
             <h3><i class="fas fa-table"></i> Add Table</h3>
             <div id="message"></div>
             <p class="form-input">

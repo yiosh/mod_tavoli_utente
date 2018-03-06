@@ -1,82 +1,6 @@
 $(document).ready(() => {
   const url = './';
 
-  function getGuestsData() {
-    $.ajax({
-      type: 'GET',
-      dataType: 'json',
-      url: url + 'api/get_data.php'
-    }).done(function(data) {
-      manageGuests(data.utenti);
-    });
-  }
-
-  function manageGuests(data) {
-    let rows = '';
-    console.log(data);
-
-    $.each(data, function(key, value) {
-      rows += `<div class="guest" id="${value.id}" tavolo-id="${value.tavolo_id}">`;
-      rows += `<p class="family-name">${value.nome} ${value.cognome}</p>`;
-      rows += `<p class="number-adults">${value.adulti}</p>`;
-      rows += `<p class="number-babies">${value.bambini}</p>`;
-      rows += `<p class="number-highchair">${value.seggioloni}</p>`;
-      rows += `<p class="number-intolerant">${value.note_intolleranze}</p>`;
-      rows += `</div>`;
-    });
-
-    $('#guest-list').html(rows);
-  }
-
-  // function getTablesData() {
-  //   $.ajax({
-  //     type: 'GET',
-  //     dataType: 'json',
-  //     url: url + 'api/get_data.php'
-  //   }).done(function(data) {
-  //     manageTables(data.utenti, data.tavoli);
-  //   });
-  // }
-
-  // function manageTables(data) {
-  //   let rows = '';
-  //   console.log(data);
-
-  //   // $.each(data, function(key, value) {
-  //   //   rows += `<div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['id']; ?>">`;
-  //   //   rows += `<div class="table-header">`;
-  //   //   rows += `<p class="table-id" hidden><?php echo $table['id']; ?></p>`;
-  //   //   rows += `<p class="table-name"><strong><?php echo $table['nome_tavolo']; ?></strong></p>`;
-  //   //   rows += `</div>`;
-  //   //   rows += `<div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">`;
-  //   //   //     <?php
-  //   //   //       foreach($result_commensali as $guest) : ?>
-  //   //   //         <?php if ($guest['tavolo_id'] > 0) : ?>
-  //   //   //           <?php if ($guest['tavolo_id'] == $table['id']) : ?>
-  //   //   //             <div id="<?php echo $guest['id'] ?>" tavolo-id="<?php echo $guest['tavolo_id'] ?>" class="guest" >
-  //   //   //               <p class="family-name"><?php echo $guest['nome']." ".$guest['cognome'] ?></p>
-  //   //   //               <p class="number-adults"><?php echo $guest['adulti'] ?></p>
-  //   //   //               <p class="number-babies"><?php echo $guest['bambini'] ?></p>
-  //   //   //               <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
-  //   //   //               <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
-  //   //   //             </div>
-  //   //   //           <?php endif; ?>
-  //   //   //         <?php endif; ?>
-  //   //   //     <?php endforeach; ?>
-  //   //   //   </div>
-  //   //   // </div>
-  //   //   rows += `<div class="guest" id="${value.id}" tavolo-id="${value.tavolo_id}">`;
-  //   //   rows += `<p class="family-name">${value.nome} ${value.cognome}</p>`;
-  //   //   rows += `<p class="number-adults">${value.adulti}</p>`;
-  //   //   rows += `<p class="number-babies">${value.bambini}</p>`;
-  //   //   rows += `<p class="number-highchair">${value.seggioloni}</p>`;
-  //   //   rows += `<p class="number-intolerant">${value.note_intolleranze}</p>`;
-  //   //   rows += `</div>`;
-  //   // });
-
-  // $('#table-list').html(rows);
-  // }
-
   // Connect quest-list with the other sortables
   if ($('#to-assign').is(':checked')) {
     $('#guest-list').sortable({
@@ -95,7 +19,7 @@ $(document).ready(() => {
       formData.append('tavolo_id', this.dataset.rel);
 
       // When it gets sorted it updates fl_tavoli
-      fetch('./includes/tables_update.php', {
+      fetch('./api/tables_update.php', {
         method: 'POST',
         body: formData
       }).catch(err => {
@@ -139,7 +63,7 @@ $(document).ready(() => {
           formData.append('tavolo_id', this.dataset.rel);
 
           // When it gets sorted it updates fl_tavoli
-          fetch('./includes/tables_update.php', {
+          fetch('./api/tables_update.php', {
             method: 'POST',
             body: formData
           }).catch(err => {
@@ -192,44 +116,53 @@ $(document).ready(() => {
       .find("input[name='note_intolleranze']")
       .val();
 
-    if (nome != '' || cognome != '' || adulti != '' || bambini != '' || seggioloni != '' || note_intolleranze != '') {
-      $.ajax({
-        dataType: 'json',
-        type: 'POST',
-        url: url + form_action,
-        data: {
-          nome: nome,
-          cognome: cognome,
-          adulti: adulti,
-          bambini: bambini,
-          seggioloni: seggioloni,
-          note_intolleranze: note_intolleranze
-        }
-      }).done(function(data) {
-        $('#add-guest-modal')
-          .find("input[name='nome']")
-          .val('');
-        $('#add-guest-modal')
-          .find("input[name='cognome']")
-          .val('');
-        $('#add-guest-modal')
-          .find("input[name='adulti']")
-          .val('');
-        $('#add-guest-modal')
-          .find("input[name='bambini']")
-          .val('');
-        $('#add-guest-modal')
-          .find("input[name='seggioloni']")
-          .val('');
-        $('#add-guest-modal')
-          .find("input[name='note_intolleranze']")
-          .val('');
-        getGuestsData();
+    if (nome != '' || cognome != '' || note_intolleranze != '') {
+      const formData = new FormData();
+      formData.append('nome', nome);
+      formData.append('cognome', cognome);
+      formData.append('adulti', adulti);
+      formData.append('bambini', bambini);
+      formData.append('seggioloni', seggioloni);
+      formData.append('cognome', cognome);
+      formData.append('note_intolleranze', note_intolleranze);
 
-        $('#add-guest-modal').hide();
+      // When it gets sorted it updates fl_tavoli
+      fetch(`${url}${form_action}`, {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.text())
+        .then(result => {
+          $('#add-guest-modal')
+            .find("input[name='nome']")
+            .val('');
+          $('#add-guest-modal')
+            .find("input[name='cognome']")
+            .val('');
+          $('#add-guest-modal')
+            .find("input[name='adulti']")
+            .val('');
+          $('#add-guest-modal')
+            .find("input[name='bambini']")
+            .val('');
+          $('#add-guest-modal')
+            .find("input[name='seggioloni']")
+            .val('');
+          $('#add-guest-modal')
+            .find("input[name='note_intolleranze']")
+            .val('');
+          $('#guest-list').load('./includes/guests_refresh.php');
+          // getGuestsData();
 
-        toastr.success('Guest Created Successfully.', 'Success Alert', { timeOut: 5000 });
-      });
+          $('#add-guest-modal').hide();
+
+          toastr.success('Guest Created Successfully.', 'Success Alert', { timeOut: 5000 });
+        })
+        .catch(err => {
+          console.error(err.message);
+        });
+    } else {
+      alert('You left a field blank');
     }
   });
 
@@ -255,10 +188,7 @@ $(document).ready(() => {
           .find("select[name='nome_tavolo']")
           .val('');
 
-        // $('#table-container').html('');
         $('#table-container').load('./includes/tables_refresh.php');
-
-        // getTablesData();
 
         $('#add-table-modal').hide();
 

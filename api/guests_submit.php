@@ -13,10 +13,5 @@
   VALUES ('449', '$nome', '$cognome', '$adulti', '$bambini', '$seggioloni', '$note_intolleranze')";
   $result = mysqli_query($conn, $guest_sql);
 
-  $guest_sql = "SELECT * FROM fl_tavoli_commensali";
-  $result = mysqli_query($conn, $guest_sql);
-  $data = mysqli_fetch_assoc($result);
-  echo json_encode($data);
-
   mysqli_close($conn);
-?>
+  

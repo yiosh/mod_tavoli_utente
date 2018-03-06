@@ -136,25 +136,25 @@
             <p class="form-input">
               <label class="label" for="input-name">Name</label>
               <br>
-              <input id="input-name" name="nome" class="form-text" type="text" required pattern="^[a-zA-Z]+$">
+              <input id="input-name" name="nome" class="form-text" type="text" pattern="^[a-zA-Z]+$">
             </p>
             <p class="form-input">
               <label class="label" for="input-last-name">Last Name</label>
               <br>
-              <input id="input-last-name" name="cognome" required class="form-text" type="text" pattern="^[a-zA-Z]+$">
+              <input id="input-last-name" name="cognome" class="form-text" type="text" pattern="^[a-zA-Z]+$">
             </p>
             <div class="numerical-textbox-container">
               <p class="form-input-numbers">
                 <label class="label" for="input-adults">Adults</label>
-                <input id="input-adults" name="adulti" required class="form-text" type="number" value="1" pattern="^[0-9]+$">
+                <input id="input-adults" name="adulti" class="form-text" type="number" value="1" pattern="^[0-9]+$">
               </p>
               <p class="form-input-numbers">
                 <label class="label" for="input-babies">Babies</label>
-                <input id="input-babies" name="bambini" required class="form-text " type="number" value="0" pattern="^[0-9]+$">
+                <input id="input-babies" name="bambini" class="form-text " type="number" value="0" pattern="^[0-9]+$">
               </p>
               <p class="form-input-numbers">
                 <label class="label" for="input-highchair">Highchair</label>
-                <input id="input-highchair" name="seggioloni" required class="form-text" type="number" value="0" pattern="^[0-9]+$">
+                <input id="input-highchair" name="seggioloni" class="form-text" type="number" value="0" pattern="^[0-9]+$">
               </p>
             </div>
             <p class="form-input">

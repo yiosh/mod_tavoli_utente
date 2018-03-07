@@ -27,8 +27,8 @@
       <!-- GUEST MENU SECTION -->
       <div class="guest-menu">
         <div class="searchbox">
-          <input type="search" class="search-txt" placeholder="Search">
-          <button type="submit" class="search-btn">
+          <input type="search" class="search-txt" onkeyup="search()" placeholder="Search">
+          <button type="button" id="search-btn">
             <i class="fas fa-search"></i>
           </button>
         </div>

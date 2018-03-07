@@ -197,24 +197,25 @@ $(document).ready(() => {
         .catch(err => {
           console.error(err.message);
         });
-      // $.ajax({
-      //   dataType: 'json',
-      //   type: 'POST',
-      //   url: url + form_action,
-      //   data: {
-      //     nome_tavolo: nome_tavolo
-      //   }
-      // }).done(function(data) {
-      //   $('#add-table-modal')
-      //     .find("select[name='nome_tavolo']")
-      //     .val('');
-
-      //   $('#table-container').load('./includes/tables_refresh.php');
-
-      //   $('#add-table-modal').hide();
-
-      //   toastr.success('Table Created Successfully.', 'Success Alert', { timeOut: 5000 });
-      // });
     }
   });
+  // Searchbar
+  $('#search-btn').click(search);
 });
+function search() {
+  let search_str = $('.searchbox')
+    .find("input[type='search']")
+    .val()
+    .toLowerCase();
+  let guests = $('#guest-list div.guest');
+  let p;
+
+  for (let i = 0; i < guests.length; i++) {
+    p = guests[i].getElementsByTagName('p')[0];
+    if (p.innerHTML.toLowerCase().indexOf(search_str) > -1) {
+      guests[i].style.display = '';
+    } else {
+      guests[i].style.display = 'none';
+    }
+  }
+}

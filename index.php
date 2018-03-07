@@ -48,7 +48,7 @@
       </div>
       <!-- GUEST LIST SECTION -->
       <div id="guest-list" class="guest-list connectedSortable">
-        <?php foreach($result_commensali as $guest) : ?>
+        <?php foreach($result_commensali2 as $guest) : ?>
           <div class="guest" id="<?php echo $guest['id'] ?>"  tavolo-id="<?php echo $guest['tavolo_id'] ?>">
             <p class="family-name"><?php echo $guest['nome'].' '.$guest['cognome'] ?></p>
             <p class="number-adults"><?php echo $guest['adulti'] ?></p>
@@ -57,18 +57,6 @@
             <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
           </div>
         <?php endforeach; ?> 
-      </div>
-
-      <!-- ASSIGN BUTTONS TO FILTER-->
-      <div class="assign-btns">
-        <label for="to-assign">
-          <input type="radio" id="to-assign" name="assigned-toggle">
-          <span class="btn toggle-btn">To Assign</span>
-        </label>
-        <label for="assigned">
-          <input type="radio" id="assigned" name="assigned-toggle">
-          <span class="btn toggle-btn">Assigned</span>
-        </label>
       </div>
 
     </div>

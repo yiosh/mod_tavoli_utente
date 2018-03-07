@@ -2,7 +2,7 @@
   require('../config/query.config.php');
 ?>
 
-<?php foreach($result_commensali as $guest) : ?>
+<?php foreach($result_commensali2 as $guest) : ?>
   <div class="guest" id="<?php echo $guest['id'] ?>"  tavolo-id="<?php echo $guest['tavolo_id'] ?>">
     <p class="family-name"><?php echo $guest['nome'].' '.$guest['cognome'] ?></p>
     <p class="number-adults"><?php echo $guest['adulti'] ?></p>

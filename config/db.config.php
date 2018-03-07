@@ -8,6 +8,8 @@
 
   // require_once($_SERVER['DOCUMENT_ROOT'].'/fl_core/autentication.php');
   // require('../../fl_core/core.php');
+  session_start();
+  $_SESSION['evento_id'] = 449;
 
   $db_host = "localhost";
   $db_user = "root";

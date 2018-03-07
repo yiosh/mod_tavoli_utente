@@ -1,13 +1,25 @@
 $(document).ready(() => {
   const url = './';
 
-  // Connect quest-list with the other sortables
-  if ($('#to-assign').is(':checked')) {
-    $('#guest-list').sortable({
-      connectWith: '.connectedSortable',
-      cursor: 'move'
-    });
-  }
+  $('#guest-list').sortable({
+    connectWith: '.connectedSortable',
+    cursor: 'move',
+    receive(e, ui) {
+      const formData = new FormData();
+      formData.append('user_id', ui.item[0].id);
+      formData.append('tavolo_id', this.dataset.rel);
+
+      // When it gets sorted it updates fl_tavoli
+      fetch('./api/tables_update.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(console.log('Table id: ' + this.dataset.rel))
+        .catch(err => {
+          console.error(err.message);
+        });
+    }
+  });
 
   // Makes the inside body of the tables sortable
   $('.table-body').sortable({
@@ -22,9 +34,11 @@ $(document).ready(() => {
       fetch('./api/tables_update.php', {
         method: 'POST',
         body: formData
-      }).catch(err => {
-        console.error(err.message);
-      });
+      })
+        .then(console.log('Table id: ' + this.dataset.rel))
+        .catch(err => {
+          console.error(err.message);
+        });
     }
   });
 
@@ -45,39 +59,6 @@ $(document).ready(() => {
   // When close button of the table modal is clicked it hides the modal
   $('#close2').click(() => {
     $('#add-table-modal').hide();
-  });
-
-  // Add an event handler to the assignment buttons
-  $('.assign-btns').change(() => {
-    // Checked if the "To Assign" button is checked
-    if ($('#to-assign').is(':checked')) {
-      $('#guest-list .guest').hide();
-      $('#guest-list .guest[tavolo-id="0"]').show();
-      $('#guest-list').sortable({
-        connectWith: '.connectedSortable',
-        cursor: 'move',
-        // helper: 'clone',
-        receive(e, ui) {
-          const formData = new FormData();
-          formData.append('user_id', ui.item[0].id);
-          formData.append('tavolo_id', this.dataset.rel);
-
-          // When it gets sorted it updates fl_tavoli
-          fetch('./api/tables_update.php', {
-            method: 'POST',
-            body: formData
-          }).catch(err => {
-            console.error(err.message);
-          });
-        }
-      });
-    } else if ($('#assigned').is(':checked')) {
-      $('#guest-list .guest').hide();
-      $('#guest-list .guest[tavolo-id!="0"]').show();
-
-      // // Destroy sortable to prevent users from draggin assigned users into tables
-      $('#guest-list').sortable('destroy');
-    }
   });
 
   $('.sposi-radio').change(() => {

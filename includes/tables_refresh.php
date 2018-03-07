@@ -4,10 +4,10 @@ require('../config/query.config.php');
 ?>
 
 <?php foreach($result_tavoli as $table) : ?>
-  <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['id']; ?>">
+  <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['numero_tavolo']; ?>">
     <div class="table-header">
       <p class="table-id" hidden><?php echo $table['id']; ?></p>
-      <p class="table-name"><strong><?php echo $table['nome_tavolo']; ?></strong></p>
+      <p class="table-name"><strong><?php echo $table['nome_tavolo'].' '.$table['numero_tavolo']; ?></strong></p>
     </div>
     <div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">
       <?php

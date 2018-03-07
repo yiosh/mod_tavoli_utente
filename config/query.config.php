@@ -1,12 +1,10 @@
 <?php
   require('db.config.php');
   // Create Query
-  $queryTables = $conn->prepare('SELECT * FROM fl_tavoli WHERE id > 1');
-  $queryTables->execute();
-  // Fetch results
-  $tables = $queryTables->fetchAll();
+  $query_tavoli = "SELECT * FROM fl_tavoli ORDER BY numero_tavolo asc";
+  $result_tavoli = mysqli_query($conn, $query_tavoli);
 
-  $queryGuests = $conn->prepare('SELECT * FROM fl_tavoli_commensali WHERE id > 1');// WHERE tavolo_id<>0
-  $queryGuests->execute();
-  // Fetch results
-  $guests = $queryGuests->fetchAll();
+  $query_commensali = "SELECT * FROM fl_tavoli_commensali ORDER BY nome desc";
+  $result_commensali = mysqli_query($conn, $query_commensali);
+
+mysqli_close($conn);

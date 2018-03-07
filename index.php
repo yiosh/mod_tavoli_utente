@@ -23,6 +23,7 @@
 <body>
   <div class="container">
     <div class="guest-section">
+
       <!-- GUEST MENU SECTION -->
       <div class="guest-menu">
         <div class="searchbox">
@@ -36,6 +37,7 @@
         </div>
       </div>
 
+      <!-- GUEST LIST HEADER -->
       <div class="guest-list-header">
         <label class="list-item list-name">Name</label>
         <abbr class="list-item" title="Adult">A</abbr>
@@ -57,6 +59,7 @@
         <?php endforeach; ?> 
       </div>
 
+      <!-- ASSIGN BUTTONS TO FILTER-->
       <div class="assign-btns">
         <label for="to-assign">
           <input type="radio" id="to-assign" name="assigned-toggle">
@@ -90,16 +93,18 @@
           </label>
         </div>
 
-        <!-- <input type="button" class="btn btn-sposo" id="btn-sposo" value="Sposo">
-        <input type="button" class="btn btn-sposa" id="btn-sposa" value="Sposa"> -->
       </div>
+
+      <!-- TABLE CONTAINER -->
       <div id="table-container" class="table-container">
         <?php foreach($result_tavoli as $table) : ?>
-          <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['id']; ?>">
+          <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['numero_tavolo']; ?>">
             <div class="table-header">
               <p class="table-id" hidden><?php echo $table['id']; ?></p>
-              <p class="table-name"><strong><?php echo $table['nome_tavolo']; ?></strong></p>
+              <p class="table-name"><strong><?php echo $table['nome_tavolo'].' '.$table['numero_tavolo']; ?></strong></p>
             </div>
+
+            <!-- TABLE BODY CONTAINER-->
             <div class="table-body connectedSortable" data-rel="<?php echo $table['id'] ?>">
               <?php
                 foreach($result_commensali as $guest) : ?>
@@ -128,7 +133,6 @@
       <div id="add-guest-modal" class="modal">
         <div class="modal-content">
           <i id="close1" class="close-btn fas fa-times"></i>
-          <!-- <span class="close-btn">&times;</span> -->
           <form method="POST" action="api/guests_submit.php">
             <h3><i class="far fa-address-card"></i> Add Guest</h3>
             <br>
@@ -168,16 +172,21 @@
           </form>
         </div>
       </div>
+      
       <!-- TABLE MODAL -->
       <div id="add-table-modal" class="modal">
         <div class="modal-content">
           <i id="close2" class="close-btn fas fa-times"></i>
           <form method="POST" action="api/tables_submit.php">
-            <h3><i class="fas fa-table"></i> Add Table</h3>
+            <h3><i class="fas fa-table"></i> Aggiungi Tabella</h3>
             <div id="message"></div>
-            <p class="form-input">
-              <label class="label">Table Name</label>
+            <p class="form-input-numbers">
+              <label class="label" for="numero_tavolo">Numero Tavolo</label>
               <br>
+              <input id="numero_tavolo" name="numero_tavolo" class="form-text" type="number" pattern="^[0-9]+$">
+            </p>
+            <p class="form-input">
+              <label class="label">Nome Tavolo</label>
               <select name="nome_tavolo" id="input-table-name">
                 <option value="SPOSO">SPOSO</option>
                 <option value="SPOSA">SPOSA</option>

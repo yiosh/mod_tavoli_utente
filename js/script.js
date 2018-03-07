@@ -140,15 +140,6 @@ $(document).ready(() => {
             .find("input[name='cognome']")
             .val('');
           $('#add-guest-modal')
-            .find("input[name='adulti']")
-            .val('');
-          $('#add-guest-modal')
-            .find("input[name='bambini']")
-            .val('');
-          $('#add-guest-modal')
-            .find("input[name='seggioloni']")
-            .val('');
-          $('#add-guest-modal')
             .find("input[name='note_intolleranze']")
             .val('');
           $('#guest-list').load('./includes/guests_refresh.php');
@@ -171,29 +162,59 @@ $(document).ready(() => {
     const form_action = $('#add-table-modal')
       .find('form')
       .attr('action');
+
+    const numero_tavolo = $('#add-table-modal')
+      .find("input[name='numero_tavolo']")
+      .val();
     const nome_tavolo = $('#add-table-modal')
       .find("select[name='nome_tavolo']")
       .val();
 
+    const formData = new FormData();
+    formData.append('numero_tavolo', numero_tavolo);
+    formData.append('nome_tavolo', nome_tavolo);
+
     if (nome_tavolo != '') {
-      $.ajax({
-        dataType: 'json',
-        type: 'POST',
-        url: url + form_action,
-        data: {
-          nome_tavolo: nome_tavolo
-        }
-      }).done(function(data) {
-        $('#add-table-modal')
-          .find("select[name='nome_tavolo']")
-          .val('');
+      fetch(`${url}${form_action}`, {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.text())
+        .then(result => {
+          $('#add-table-modal')
+            .find("select[name='nome_tavolo']")
+            .val('');
+          $('#add-table-modal')
+            .find("select[name='numero_tavolo']")
+            .val('');
 
-        $('#table-container').load('./includes/tables_refresh.php');
+          $('#table-container').load('./includes/tables_refresh.php');
 
-        $('#add-table-modal').hide();
+          $('#add-table-modal').hide();
 
-        toastr.success('Table Created Successfully.', 'Success Alert', { timeOut: 5000 });
-      });
+          toastr.success('Table Created Successfully.', 'Success Alert', { timeOut: 5000 });
+        })
+        .catch(err => {
+          console.error(err.message);
+        });
+      // $.ajax({
+      //   dataType: 'json',
+      //   type: 'POST',
+      //   url: url + form_action,
+      //   data: {
+      //     nome_tavolo: nome_tavolo
+      //   }
+      // }).done(function(data) {
+      //   $('#add-table-modal')
+      //     .find("select[name='nome_tavolo']")
+      //     .val('');
+
+      //   $('#table-container').load('./includes/tables_refresh.php');
+
+      //   $('#add-table-modal').hide();
+
+      //   toastr.success('Table Created Successfully.', 'Success Alert', { timeOut: 5000 });
+      // });
     }
   });
 });

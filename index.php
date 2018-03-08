@@ -27,13 +27,11 @@
       <!-- GUEST MENU SECTION -->
       <div class="guest-menu">
         <div class="searchbox">
-          <input type="search" class="search-txt" onkeyup="search()" placeholder="Search">
-          <button type="button" id="search-btn">
-            <i class="fas fa-search"></i>
-          </button>
+          <input type="search" class="search-txt" placeholder="Search">
+          <i id="search-icon" class="fas fa-search"></i>
         </div>
         <div>
-          <button type="button" id="add-guest" class="btn add-guest"><i class="fa fa-plus-circle"></i> Add Guest</button>
+          <button type="button" id="add-guest" class="btn add-guest"><i class="fa fa-plus-circle"></i> Aggiungi Ospite</button>
         </div>
       </div>
 
@@ -55,6 +53,9 @@
             <p class="number-babies"><?php echo $guest['bambini'] ?></p>
             <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
             <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
+            <button type="button" class="delete-btn">
+              <i class="fas fa-minus-circle"></i>
+            </button>
           </div>
         <?php endforeach; ?> 
       </div>
@@ -184,6 +185,13 @@
               <button type="submit" class="btn" id="submit-table" name="submit-table" >Submit</button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!--CONFIRM MODAL -->
+      <div id="content-confirm" class="modal">
+        <div class="modal-content modal-confirm">
+    
         </div>
       </div>
     </div>

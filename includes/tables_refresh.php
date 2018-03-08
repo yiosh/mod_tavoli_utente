@@ -1,6 +1,5 @@
 <?php
-require('../config/query.config.php');
-
+  require('../config/query.config.php');
 ?>
 
 <?php foreach($result_tavoli as $table) : ?>

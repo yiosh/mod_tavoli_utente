@@ -9,5 +9,8 @@
     <p class="number-babies"><?php echo $guest['bambini'] ?></p>
     <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
     <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
+    <button type="button" class="delete-btn">
+      <i class="fas fa-minus-circle"></i>
+    </button>
   </div>
 <?php endforeach; ?>

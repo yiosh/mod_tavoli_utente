@@ -5,16 +5,31 @@ $(document).ready(() => {
     connectWith: '.connectedSortable',
     cursor: 'move',
     receive(e, ui) {
+      const nome_tavolo = ui.item[0].parentElement.parentElement.children[0].children[1].innerText;
+      const e_id = ui.item[0].id;
       const formData = new FormData();
+
       formData.append('user_id', ui.item[0].id);
       formData.append('tavolo_id', this.dataset.rel);
+      formData.append('nome_tavolo', ui.item[0].parentElement.parentElement.children[0].children[1].innerText);
+      formData.append('nome_cognome', ui.item[0].children[0].innerText);
 
       // When it gets sorted it updates fl_tavoli
       fetch('./api/tables_update.php', {
         method: 'POST',
         body: formData
       })
-        .then(console.log('Table id: ' + this.dataset.rel))
+        .then(response => response.text())
+        .then(result => {
+          console.log(ui);
+          // if (nome_tavolo == 'Aggiungi Ospite') {
+          //   $('#guest-list div.guest');
+          // }
+          // $('#guest-list').load('./includes/guests_refresh.php');
+          // $('#table-container').load('./includes/tables_refresh.php');
+
+          console.log(result);
+        })
         .catch(err => {
           console.error(err.message);
         });
@@ -29,13 +44,21 @@ $(document).ready(() => {
       const formData = new FormData();
       formData.append('user_id', ui.item[0].id);
       formData.append('tavolo_id', this.dataset.rel);
+      formData.append('nome_tavolo', ui.item[0].parentElement.parentElement.children[0].children[1].innerText);
+      formData.append('nome_cognome', ui.item[0].children[0].innerText);
 
       // When it gets sorted it updates fl_tavoli
       fetch('./api/tables_update.php', {
         method: 'POST',
         body: formData
       })
-        .then(console.log('Table id: ' + this.dataset.rel))
+        .then(response => response.text())
+        .then(result => {
+          console.log(ui.item[0].id);
+          // $('#guest-list').load('./includes/guests_refresh.php');
+          // $('#table-container').load('./includes/tables_refresh.php');
+          console.log(result);
+        })
         .catch(err => {
           console.error(err.message);
         });
@@ -98,13 +121,12 @@ $(document).ready(() => {
       .val();
 
     if (nome != '' || cognome != '' || note_intolleranze != '') {
-      const formData = new FormData();
+      let formData = new FormData();
       formData.append('nome', nome);
       formData.append('cognome', cognome);
       formData.append('adulti', adulti);
       formData.append('bambini', bambini);
       formData.append('seggioloni', seggioloni);
-      formData.append('cognome', cognome);
       formData.append('note_intolleranze', note_intolleranze);
 
       // When it gets sorted it updates fl_tavoli
@@ -114,6 +136,12 @@ $(document).ready(() => {
       })
         .then(response => response.text())
         .then(result => {
+          formData.delete('nome');
+          formData.delete('cognome');
+          formData.delete('adulti');
+          formData.delete('bambini');
+          formData.delete('seggioloni');
+          formData.delete('note_intolleranze');
           $('#add-guest-modal')
             .find("input[name='nome']")
             .val('');
@@ -123,7 +151,13 @@ $(document).ready(() => {
           $('#add-guest-modal')
             .find("input[name='note_intolleranze']")
             .val('');
-          $('#guest-list').load('./includes/guests_refresh.php');
+
+          $.get('./includes/guests_refresh.php', function(data) {
+            $('#guest-list').html(data);
+            console.log('Guest was added.');
+          });
+
+          // $('#guest-list').load('./includes/guests_refresh.php');
           // getGuestsData();
 
           $('#add-guest-modal').hide();
@@ -180,23 +214,70 @@ $(document).ready(() => {
         });
     }
   });
-  // Searchbar
-  $('#search-btn').click(search);
-});
-function search() {
-  let search_str = $('.searchbox')
-    .find("input[type='search']")
-    .val()
-    .toLowerCase();
-  let guests = $('#guest-list div.guest');
-  let p;
 
-  for (let i = 0; i < guests.length; i++) {
-    p = guests[i].getElementsByTagName('p')[0];
-    if (p.innerHTML.toLowerCase().indexOf(search_str) > -1) {
-      guests[i].style.display = '';
-    } else {
-      guests[i].style.display = 'none';
+  // Delete guest from guest-list
+  $('#guest-list').click(function(e) {
+    e.preventDefault();
+    if (e.target.className === 'delete-btn') {
+      $('.modal-confirm').html(`
+        <h3>Sei sicuro di voler eliminare ${e.target.parentElement.childNodes[1].innerHTML}?</h3>
+        <div class="confirm-btn-set">
+          <div class="confirm">
+            <button id="si" class="btn"><i class="fas fa-check-circle"></i> Sì</button>
+            <button id="no" class="btn"><i class="fas fa-times-circle"></i> No</button>
+          </div>
+        </div>
+      `);
+
+      $('#content-confirm').show();
+
+      $('#si').click(function() {
+        const formData = new FormData();
+        const id = e.target.parentElement.id;
+        formData.append('id', id);
+        fetch(`${url}api/guests_delete.php`, {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.text())
+          .then(result => {
+            $.get('./includes/guests_refresh.php', function(data) {
+              $('#guest-list').html(data);
+              console.log(result);
+            });
+            $('.modal-confirm').html('');
+            $('#content-confirm').hide();
+
+            toastr.success(result, 'Alert', { timeOut: 5000 });
+          })
+          .catch(err => {
+            console.error(err.message);
+          });
+      });
+
+      $('#no').click(function() {
+        $('.modal-confirm').html('');
+        $('#content-confirm').hide();
+      });
     }
-  }
-}
+  });
+
+  // Searchbar
+  $('.search-txt').keyup(function() {
+    let search_str = $('.searchbox')
+      .find("input[type='search']")
+      .val()
+      .toLowerCase();
+    let guests = $('#guest-list div.guest');
+    let p;
+
+    for (let i = 0; i < guests.length; i++) {
+      p = guests[i].getElementsByTagName('p')[0];
+      if (p.innerHTML.toLowerCase().indexOf(search_str) > -1) {
+        guests[i].style.display = '';
+      } else {
+        guests[i].style.display = 'none';
+      }
+    }
+  });
+});

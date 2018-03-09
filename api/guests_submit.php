@@ -9,9 +9,25 @@
   $seggioloni = $_POST['seggioloni'];
   $note_intolleranze = $_POST['note_intolleranze'];
 
-  echo $guest_sql = "INSERT INTO fl_tavoli_commensali (evento_id, nome, cognome, adulti, bambini, seggioloni, note_intolleranze)
+  $sql = "INSERT INTO fl_tavoli_commensali (evento_id, nome, cognome, adulti, bambini, seggioloni, note_intolleranze)
   VALUES ('449', '$nome', '$cognome', '$adulti', '$bambini', '$seggioloni', '$note_intolleranze')";
-  $result = mysqli_query($conn, $guest_sql);
+
+  if ($result = mysqli_query($conn, $sql)) {
+    $id = mysqli_insert_id($conn);
+    $sql = "SELECT * FROM fl_tavoli_commensali WHERE id='$id'";
+
+    if ($result = mysqli_query($conn, $sql)) {
+      $json = mysqli_fetch_assoc($result);
+
+      echo json_encode($json);
+
+    } else {
+      echo "Errore durante l'aggiunta di $nome $cognome. MySQli Error: " . mysqli_error($conn);
+    }
+
+  } else {
+    echo "Errore durante l'aggiunta di $nome $cognome. MySQli Error: " . mysqli_error($conn);
+  }
 
   mysqli_close($conn);
   

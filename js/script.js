@@ -1,19 +1,47 @@
 $(document).ready(() => {
   const url = './';
 
-  $('#guest-list').sortable({
-    connectWith: '.connectedSortable',
-    cursor: 'move',
-    receive(e, ui) {
-      const nome_tavolo = ui.item[0].parentElement.parentElement.children[0].children[1].innerText;
-      const e_id = ui.item[0].id;
-      const formData = new FormData();
+  // Searchbar
+  $('.search-txt').keyup(function() {
+    let search_str = $('.searchbox')
+      .find("input[type='search']")
+      .val()
+      .toLowerCase();
+    let guests = $('#guest-list div.guest');
+    let p;
 
-      formData.append('user_id', ui.item[0].id);
-      formData.append('tavolo_id', this.dataset.rel);
-      formData.append('nome_tavolo', ui.item[0].parentElement.parentElement.children[0].children[1].innerText);
-      formData.append('nome_cognome', ui.item[0].children[0].innerText);
+    for (let i = 0; i < guests.length; i++) {
+      p = guests[i].getElementsByTagName('p')[0];
+      if (p.innerHTML.toLowerCase().indexOf(search_str) > -1) {
+        guests[i].style.display = '';
+      } else {
+        guests[i].style.display = 'none';
+      }
+    }
+  });
 
+  // Updates guest data when it is dragged to a different table
+  function guestUpdate(e, ui) {
+    let nome_tavolo = ui.item[0].parentElement.parentElement.children[0].children[1].innerText;
+    let tavolo_id = ui.item[0].parentElement.dataset.rel;
+    const id = ui.item[0].id;
+
+    if (nome_tavolo == ' Aggiungi Ospite') {
+      nome_tavolo = 'Elenco degli Ospiti';
+    }
+
+    if (tavolo_id == 'guest-list connectedSortable ui-sortable') {
+      tavolo_id = 0;
+    }
+
+    const formData = new FormData();
+
+    formData.append('user_id', ui.item[0].id);
+    formData.append('tavolo_id', tavolo_id);
+    formData.append('nome_tavolo', nome_tavolo);
+    formData.append('nome_cognome', ui.item[0].children[0].innerText);
+
+    if (tavolo_id == 0) {
       // When it gets sorted it updates fl_tavoli
       fetch('./api/tables_update.php', {
         method: 'POST',
@@ -21,47 +49,56 @@ $(document).ready(() => {
       })
         .then(response => response.text())
         .then(result => {
-          console.log(ui);
-          // if (nome_tavolo == 'Aggiungi Ospite') {
-          //   $('#guest-list div.guest');
-          // }
-          // $('#guest-list').load('./includes/guests_refresh.php');
-          // $('#table-container').load('./includes/tables_refresh.php');
+          const resultElement = JSON.parse(result);
+          $(`#delete${id}`).show();
+          console.log(id);
+          console.log(
+            `${resultElement.nome} ${resultElement.cognome}(id: ${
+              resultElement.id
+            }) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${resultElement.tavolo_id})`
+          );
+        })
+        .catch(err => {
+          console.error(err.message);
+        });
+    } else if (tavolo_id > 0) {
+      // When it gets sorted it updates fl_tavoli
+      fetch('./api/tables_update.php', {
+        method: 'POST',
+        body: formData
+      })
+        .then(response => response.text())
+        .then(result => {
+          const resultElement = JSON.parse(result);
 
-          console.log(result);
+          $(`.table-body #${id} button.delete-btn`).hide();
+
+          console.log(
+            `${resultElement.nome} ${resultElement.cognome}(id: ${
+              resultElement.id
+            }) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${resultElement.tavolo_id})`
+          );
         })
         .catch(err => {
           console.error(err.message);
         });
     }
+  }
+
+  // Makes guest-list items sortable
+  $('#guest-list').sortable({
+    connectWith: '.connectedSortable',
+    cursor: 'move',
+    receive(e, ui) {
+      guestUpdate(e, ui);
+    }
   });
 
-  // Makes the inside body of the tables sortable
   $('.table-body').sortable({
     connectWith: '.connectedSortable',
     cursor: 'move',
     receive(e, ui) {
-      const formData = new FormData();
-      formData.append('user_id', ui.item[0].id);
-      formData.append('tavolo_id', this.dataset.rel);
-      formData.append('nome_tavolo', ui.item[0].parentElement.parentElement.children[0].children[1].innerText);
-      formData.append('nome_cognome', ui.item[0].children[0].innerText);
-
-      // When it gets sorted it updates fl_tavoli
-      fetch('./api/tables_update.php', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.text())
-        .then(result => {
-          console.log(ui.item[0].id);
-          // $('#guest-list').load('./includes/guests_refresh.php');
-          // $('#table-container').load('./includes/tables_refresh.php');
-          console.log(result);
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
+      guestUpdate(e, ui);
     }
   });
 
@@ -136,12 +173,7 @@ $(document).ready(() => {
       })
         .then(response => response.text())
         .then(result => {
-          formData.delete('nome');
-          formData.delete('cognome');
-          formData.delete('adulti');
-          formData.delete('bambini');
-          formData.delete('seggioloni');
-          formData.delete('note_intolleranze');
+          const resultElement = JSON.parse(result);
           $('#add-guest-modal')
             .find("input[name='nome']")
             .val('');
@@ -152,20 +184,45 @@ $(document).ready(() => {
             .find("input[name='note_intolleranze']")
             .val('');
 
-          $.get('./includes/guests_refresh.php', function(data) {
-            $('#guest-list').html(data);
-            console.log('Guest was added.');
+          $('#guest-list').append(`
+            <div class="guest" id="${resultElement.id}"  tavolo-id="${resultElement.tavolo_id}">
+              <p class="family-name">${resultElement.nome} ${resultElement.cognome}</p>
+              <p class="number-adults">${resultElement.adulti}</p>
+              <p class="number-babies">${resultElement.bambini}</p>
+              <p class="number-highchair">${resultElement.seggioloni}</p>
+              <p class="number-intolerant">${resultElement.note_intolleranze}</p>
+              <button id="delete${resultElement.id}" type="button" class="delete-btn">
+                <i class="fas fa-minus-circle"></i>
+              </button>
+            </div>
+          `);
+
+          $('#guest-list').sortable({
+            connectWith: '.connectedSortable',
+            cursor: 'move',
+            receive(ev, ui) {
+              guestUpdate(e, ui);
+            }
           });
 
-          // $('#guest-list').load('./includes/guests_refresh.php');
-          // getGuestsData();
+          $('.table-body').sortable({
+            connectWith: '.connectedSortable',
+            cursor: 'move',
+            receive(ev, ui) {
+              guestUpdate(e, ui);
+            }
+          });
+
+          $('#guest-list').load('./includes/guests_refresh.php');
+          console.log(result);
 
           $('#add-guest-modal').hide();
 
-          toastr.success('Guest Created Successfully.', 'Success Alert', { timeOut: 5000 });
+          toastr.success(result, 'Avviso di successo', { timeOut: 5000 });
         })
         .catch(err => {
           console.error(err.message);
+          toastr.error(err, 'Avviso di errore', { timeOut: 5000 });
         });
     } else {
       alert('You left a field blank');
@@ -196,14 +253,41 @@ $(document).ready(() => {
       })
         .then(response => response.text())
         .then(result => {
+          const resultElement = JSON.parse(result);
           $('#add-table-modal')
             .find("select[name='nome_tavolo']")
             .val('');
           $('#add-table-modal')
             .find("select[name='numero_tavolo']")
             .val('');
+          console.log(result);
 
-          $('#table-container').load('./includes/tables_refresh.php');
+          $('#table-container').append(`
+            <div class="table" data-rel="${resultElement.nome}${resultElement.numero_tavolo}">
+              <div class="table-header">
+                <p class="table-id" hidden>${resultElement.id}</p>
+                <p class="table-name"><strong>${resultElement.nome_tavolo} ${resultElement.numero_tavolo}</strong></p>
+              </div>
+              <div class="table-body connectedSortable" data-rel="${resultElement.id}">
+
+              </div>
+            </div>`);
+
+          $('#guest-list').sortable({
+            connectWith: '.connectedSortable',
+            cursor: 'move',
+            receive(ev, ui) {
+              guestUpdate(e, ui);
+            }
+          });
+
+          $('.table-body').sortable({
+            connectWith: '.connectedSortable',
+            cursor: 'move',
+            receive(ev, ui) {
+              guestUpdate(e, ui);
+            }
+          });
 
           $('#add-table-modal').hide();
 
@@ -259,25 +343,6 @@ $(document).ready(() => {
         $('.modal-confirm').html('');
         $('#content-confirm').hide();
       });
-    }
-  });
-
-  // Searchbar
-  $('.search-txt').keyup(function() {
-    let search_str = $('.searchbox')
-      .find("input[type='search']")
-      .val()
-      .toLowerCase();
-    let guests = $('#guest-list div.guest');
-    let p;
-
-    for (let i = 0; i < guests.length; i++) {
-      p = guests[i].getElementsByTagName('p')[0];
-      if (p.innerHTML.toLowerCase().indexOf(search_str) > -1) {
-        guests[i].style.display = '';
-      } else {
-        guests[i].style.display = 'none';
-      }
     }
   });
 });

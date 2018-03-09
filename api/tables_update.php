@@ -13,11 +13,9 @@
 
     if ($result = mysqli_query($conn, $sql)) {
       $json = mysqli_fetch_assoc($result);
- 
-      // echo $result;
+
       echo json_encode($json);
-      
-      // echo "$nome_cognome(id: $user_id) aggiunto correttamente a $nome_tavolo(tavolo_id: $tavolo_id)";
+
     } else {
       echo "Errore durante l'aggiunta di $nome_cognome alla tavolo: $nome_tavolo. MySQli Error: " . mysqli_error($conn);
     }

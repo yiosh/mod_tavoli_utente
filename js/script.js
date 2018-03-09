@@ -176,6 +176,7 @@ $(document).ready(() => {
         .then(response => response.text())
         .then(result => {
           const resultElement = JSON.parse(result);
+          console.log(result);
           $('#add-guest-modal')
             .find("input[name='nome']")
             .val('');
@@ -215,12 +216,9 @@ $(document).ready(() => {
             }
           });
 
-          $('#guest-list').load('./includes/guests_refresh.php');
-          console.log(result);
-
           $('#add-guest-modal').hide();
 
-          toastr.success(result, 'Avviso di successo', { timeOut: 5000 });
+          toastr.success(`${nome} ${cognome} creata con successo`, 'Successo', { timeOut: 5000 });
         })
         .catch(err => {
           console.error(err.message);
@@ -294,7 +292,7 @@ $(document).ready(() => {
 
           $('#add-table-modal').hide();
 
-          toastr.success('Table Created Successfully.', 'Success Alert', { timeOut: 5000 });
+          toastr.success(`${nome_tavolo} ${numero_tavolo} creata con successo.`, 'Successo', { timeOut: 5000 });
         })
         .catch(err => {
           console.error(err.message);

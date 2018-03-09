@@ -333,7 +333,7 @@ $(document).ready(() => {
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
 
-            toastr.success(result, 'Alert', { timeOut: 5000 });
+            toastr.success('Opesti cancellato.', 'Successo', { timeOut: 5000 });
           })
           .catch(err => {
             console.error(err.message);

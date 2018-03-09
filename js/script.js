@@ -85,7 +85,7 @@ $(document).ready(() => {
     }
   }
 
-  // Makes guest-list items sortable
+  // Makesguests inside the guest-list sortable
   $('#guest-list').sortable({
     connectWith: '.connectedSortable',
     cursor: 'move',
@@ -94,6 +94,7 @@ $(document).ready(() => {
     }
   });
 
+  // Makes guests inside tables sortable
   $('.table-body').sortable({
     connectWith: '.connectedSortable',
     cursor: 'move',
@@ -133,6 +134,7 @@ $(document).ready(() => {
     }
   });
 
+  // Add a new guest
   $('#submit-guest').click(function(e) {
     e.preventDefault();
     const form_action = $('#add-guest-modal')
@@ -229,6 +231,7 @@ $(document).ready(() => {
     }
   });
 
+  // Add a new table
   $('#submit-table').click(function(e) {
     e.preventDefault();
     const form_action = $('#add-table-modal')

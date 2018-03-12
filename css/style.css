@@ -5,7 +5,6 @@
   box-sizing: border-box;
 }
 html {
-  
   font-family: sans-serif;
   font-size: 12px;
   margin: 0;
@@ -16,8 +15,66 @@ body {
   margin: 0;
 }
 
-[draggable='true'] {
+[draggable="true"] {
   cursor: move;
+}
+
+/* Customs */
+
+.ui-sortable-placeholder {
+  /* border: 3px dashed #aaa; */
+  height: 3.5em;
+  width: 90%;
+  margin: 1em auto;
+  background: #5f4a4a;
+}
+
+.modal-confirm > h3 {
+  text-align: center;
+}
+
+.confirm-btn-set {
+  display: flex;
+}
+
+.confirm {
+  margin: auto;
+  padding: 0.4em;
+  /* display: inline-block; */
+}
+
+#si,
+#no {
+  display: inline-block;
+  width: 5em;
+}
+
+select {
+  margin: 50px;
+  border: 1px solid #111;
+  background: transparent;
+  width: 150px;
+  padding: 5px 35px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(./sort-down.png) 96% / 15% no-repeat #eee;
+}
+
+/* CAUTION: IE hackery ahead */
+select::-ms-expand {
+  display: none; /* remove default arrow on ie10 and ie11 */
+}
+
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width: 0\0) {
+  select {
+    background: none\9;
+    padding: 5px\9;
+  }
 }
 
 .container {
@@ -44,7 +101,6 @@ body {
 }
 
 .guest-menu {
-  max-height: 10%;
   width: 100%;
   margin-bottom: 1rem;
   display: flex;
@@ -57,13 +113,17 @@ body {
   display: flex;
   justify-content: space-between;
   margin: 0em 1em 0em 0em;
-  padding: 0.5em 0em;
   background-color: #fff8f8;
   border-radius: 0.5em;
 }
 
+.searchbox #search-icon {
+  display: flex;
+  margin: auto;
+}
+
 .search-txt {
-  width: 100%;
+  width: 80%;
   margin: 0em 0em 0em 1em;
   text-align: left;
   border: none;
@@ -72,6 +132,7 @@ body {
 }
 
 .btn {
+  cursor: pointer;
   font-weight: bold;
   background-color: #5f4a4a;
   padding: 0.5em;
@@ -81,7 +142,24 @@ body {
   color: #fff;
 }
 
-.search-btn {
+.btn:hover {
+  background-color: #503e3e;
+}
+
+.delete-btn {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #fff;
+  /* border: 0.15em solid #FFF8F8; */
+  border: none;
+  color: #917b7b;
+}
+
+.delete-btn:hover {
+  color: #5f4a4a;
+}
+
+#search-btn {
   margin: 0em 0.5em;
   border: none;
   background-color: #fff8f8;
@@ -119,12 +197,16 @@ body {
   border-bottom-left-radius: 0.5em;
   border-bottom-right-radius: 0.5em;
   background-color: #897474;
-  overflow-y: auto;
+  overflow: auto;
+}
+
+.place-holder {
+  background: #000;
 }
 
 .guest {
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 2fr;
   background-color: #fff;
   border: 0.1em solid #fff;
   border-radius: 0.5em;
@@ -132,10 +214,15 @@ body {
   text-align: center;
   color: #5f4a4a;
   padding: 1rem;
+  overflow: auto;
 }
 
+.guest:hover {
+  border: 0.2em solid #5f4a4a;
+}
 
-.toggle input[type='radio'] {
+.assigned-toggle input[type="radio"],
+.sposi-radio input[type="radio"] {
   display: none;
 }
 
@@ -145,13 +232,19 @@ body {
   padding-top: 1em;
 }
 
-.assign-btns input[type='radio'] {
+.assign-btns input[type="radio"],
+.sposi-radio input[type="radio"] {
   display: none;
 }
 
-.assign-btns input:checked + span {
+.assign-btns input:checked + span,
+.sposi-radio input:checked + span {
   background-color: #404040;
   color: #f7f7f7;
+}
+
+.sposi-radio {
+  display: inline;
 }
 
 /* TABLE SECTION */
@@ -177,6 +270,18 @@ body {
   height: 85%;
 }
 
+.table-header {
+  background-color: #fff8f8;
+  display: flex;
+  flex-direction: row;
+  padding: 0 1em;
+  justify-content: space-between;
+}
+
+.table-header > .delete-btn {
+  background-color: #fff8f8;
+}
+
 .table {
   box-sizing: border-box;
   min-height: 200px;
@@ -188,12 +293,8 @@ body {
 }
 
 .table-name {
-  height: 20%;
-  background-color: #fff8f8;
   margin: 0em;
   padding: 0.5em;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
   color: #635252;
   font-size: 1.2em;
 }
@@ -204,7 +305,7 @@ body {
   min-height: 12rem;
   max-height: 17.5rem;
   min-width: 10rem;
-  overflow-y: auto; 
+  overflow-y: auto;
 }
 
 /* MODAL */
@@ -265,7 +366,7 @@ form {
   margin: 5% auto;
   padding: 1.5em;
   border: none;
-  width: 80%;
+  width: 50%;
 }
 
 .form-text {
@@ -306,7 +407,8 @@ form {
   cursor: pointer;
 }
 
-.guest , .guest > p {
+.guest,
+.guest > p {
   cursor: pointer;
 }
 
@@ -346,7 +448,7 @@ form {
     grid-template-rows: 1fr;
     grid-template-columns: 30% 69.3%;
     grid-auto-flow: column;
-    grid-column-gap: .7%;
+    grid-column-gap: 0.7%;
     margin: 0;
   }
 
@@ -362,7 +464,6 @@ form {
   #input-adults,
   #input-babies,
   #input-highchair {
-    height: 1.25em;
     padding: 0.5em;
   }
 
@@ -384,9 +485,9 @@ form {
     overflow-x: hidden;
     overflow-y: auto;
     margin-top: 0;
-    border-radius: .5rem;
+    border-radius: 0.5rem;
     padding-bottom: 1em;
-    margin-bottom: 1rem,
+    margin-bottom: 1rem;
   }
 
   .table-body {
@@ -400,6 +501,6 @@ form {
   }
 
   .assign-btns .btn {
-    padding: .8em;
+    padding: 0.8em;
   }
 }

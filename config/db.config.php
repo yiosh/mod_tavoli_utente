@@ -1,16 +1,31 @@
 <?php
-  define('ROOT_URL', 'http://localhost/marriage-app/');
+  // ini_set('display_errors', 1);
+  // ini_set('display_startup_errors', 1);
+  // error_reporting(E_ALL);
+  // define('ROOT_URL', 'http://localhost/mod_tavoli_utente/');
 
-  $DB_host = "localhost";
-  $DB_user = "root";
-  $DB_pass = "";
-  $DB_name = "db_calderoni";
+  
+
+  // require_once($_SERVER['DOCUMENT_ROOT'].'/fl_core/autentication.php');
+  // require('../../fl_core/core.php');
+  session_start();
+  $_SESSION['evento_id'] = 449;
+
+  $db_host = "localhost";
+  $db_user = "root";
+  $db_pass = "";
+  $db_name = "banquet_losmeraldo";
+
+  // $db_host = $host;
+  // $db_user = $login;
+  // $db_pass = $pwd;
+  // $db_name = $db;
   
   // Create and check Connection
-  try {
-     $conn = new PDO("mysql:host={$DB_host};dbname={$DB_name}",$DB_user,$DB_pass);
-     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
- } catch(PDOException $e) {
-    // Connection failes
-    echo "ERROR : ".$e->getMessage();
- }
+  $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
+
+  /* Check connection */
+  if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  }
+?>

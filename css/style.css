@@ -21,6 +21,26 @@ body {
 
 /* Customs */
 
+.modal-confirm > h3 {
+  text-align: center;
+}
+
+.confirm-btn-set {
+  display: flex;
+}
+
+.confirm {
+  margin: auto;
+  padding: 0.4em;
+  /* display: inline-block; */
+}
+
+#si,
+#no {
+  display: inline-block;
+  width: 5em;
+}
+
 select {
   margin: 50px;
   border: 1px solid #111;
@@ -73,7 +93,6 @@ select::-ms-expand {
 }
 
 .guest-menu {
-  max-height: 10%;
   width: 100%;
   margin-bottom: 1rem;
   display: flex;
@@ -86,13 +105,17 @@ select::-ms-expand {
   display: flex;
   justify-content: space-between;
   margin: 0em 1em 0em 0em;
-  padding: 0.5em 0em;
   background-color: #fff8f8;
   border-radius: 0.5em;
 }
 
+.searchbox #search-icon {
+  display: flex;
+  margin: auto;
+}
+
 .search-txt {
-  width: 100%;
+  width: 80%;
   margin: 0em 0em 0em 1em;
   text-align: left;
   border: none;
@@ -101,6 +124,7 @@ select::-ms-expand {
 }
 
 .btn {
+  cursor: pointer;
   font-weight: bold;
   background-color: #5f4a4a;
   padding: 0.5em;
@@ -108,6 +132,23 @@ select::-ms-expand {
   border: none;
   border-radius: 0.4rem;
   color: #fff;
+}
+
+.btn:hover {
+  background-color: #503e3e;
+}
+
+.delete-btn {
+  cursor: pointer;
+  font-weight: bold;
+  background-color: #fff;
+  /* border: 0.15em solid #FFF8F8; */
+  border: none;
+  color: #917b7b;
+}
+
+.delete-btn:hover {
+  color: #5f4a4a;
 }
 
 #search-btn {
@@ -153,7 +194,7 @@ select::-ms-expand {
 
 .guest {
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 2fr;
   background-color: #fff;
   border: 0.1em solid #fff;
   border-radius: 0.5em;
@@ -162,6 +203,10 @@ select::-ms-expand {
   color: #5f4a4a;
   padding: 1rem;
   overflow: auto;
+}
+
+.guest:hover {
+  border: 0.2em solid #5f4a4a;
 }
 
 .assigned-toggle input[type="radio"],
@@ -213,6 +258,18 @@ select::-ms-expand {
   height: 85%;
 }
 
+.table-header {
+  background-color: #fff8f8;
+  display: flex;
+  flex-direction: row;
+  padding: 0 1em;
+  justify-content: space-between;
+}
+
+.table-header > .delete-btn {
+  background-color: #fff8f8;
+}
+
 .table {
   box-sizing: border-box;
   min-height: 200px;
@@ -224,12 +281,8 @@ select::-ms-expand {
 }
 
 .table-name {
-  height: 20%;
-  background-color: #fff8f8;
   margin: 0em;
   padding: 0.5em;
-  border-top-left-radius: 0.3rem;
-  border-top-right-radius: 0.3rem;
   color: #635252;
   font-size: 1.2em;
 }
@@ -301,7 +354,7 @@ form {
   margin: 5% auto;
   padding: 1.5em;
   border: none;
-  width: 80%;
+  width: 50%;
 }
 
 .form-text {

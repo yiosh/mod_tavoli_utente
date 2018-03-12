@@ -12,6 +12,22 @@
   
   $sql = "INSERT INTO fl_tavoli (numero_tavolo, layout_id, evento_id, nome_tavolo, data_creazione, tipo_tavolo_id)
   VALUES ('$numero_tavolo', '$layout_id', '$evento_id', '$nome_tavolo', (now()), '$tipo_tavolo_id')";
-  $result = mysqli_query($conn, $sql);
+
+  if ($result = mysqli_query($conn, $sql)) {
+    $id = mysqli_insert_id($conn);
+    $sql = "SELECT * FROM fl_tavoli WHERE id='$id'";
+
+    if ($result = mysqli_query($conn, $sql)) {
+      $json = mysqli_fetch_assoc($result);
+
+      echo json_encode($json);
+
+    } else {
+      echo "Errore durante l'aggiunta di $nome_cognome alla tavolo: $nome_tavolo. MySQli Error: " . mysqli_error($conn);
+    }
+
+  } else {
+    echo "Errore durante l'aggiunta di $nome_cognome alla tavolo: $nome_tavolo. MySQli Error: " . mysqli_error($conn);
+  }
 
   mysqli_close($conn);

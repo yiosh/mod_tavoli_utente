@@ -10,8 +10,4 @@
   $query_commensali2 = "SELECT * FROM fl_tavoli_commensali WHERE tavolo_id = 0 AND evento_id = ".$_SESSION['evento_id']." ORDER BY nome desc";
   $result_commensali2 = mysqli_query($conn, $query_commensali2);
 
-  
-
-  
-
 mysqli_close($conn);

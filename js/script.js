@@ -51,7 +51,6 @@ $(document).ready(() => {
         .then(result => {
           const resultElement = JSON.parse(result);
           $(`#delete${id}`).show();
-          console.log(id);
           console.log(
             `${resultElement.nome} ${resultElement.cognome}(id: ${
               resultElement.id
@@ -127,10 +126,10 @@ $(document).ready(() => {
       $('.table').show();
     } else if ($('#sposo').is(':checked')) {
       $('.table').hide();
-      $('.table[data-rel*="SPOSO"]').show();
+      $('.table[tavolo-nome*="SPOSO"]').show();
     } else if ($('#sposa').is(':checked')) {
       $('.table').hide();
-      $('.table[data-rel*="SPOSA"]').show();
+      $('.table[tavolo-nome*="SPOSA"]').show();
     }
   });
 
@@ -264,10 +263,15 @@ $(document).ready(() => {
           console.log(result);
 
           $('#table-container').append(`
-            <div class="table" data-rel="${resultElement.nome}${resultElement.numero_tavolo}">
+            <div id="${resultElement.id}" class="table" tavolo-nome="${resultElement.nome_tavolo} ${
+            resultElement.numero_tavolo
+          }">
               <div class="table-header">
                 <p class="table-id" hidden>${resultElement.id}</p>
-                <p class="table-name"><strong>${resultElement.nome_tavolo} ${resultElement.numero_tavolo}</strong></p>
+                <p class="table-name">${resultElement.nome_tavolo} ${resultElement.numero_tavolo}</p>
+                <button id="delete${resultElement.id}" type="button" title="Elimina tavolo" class="delete-btn">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
               </div>
               <div class="table-body connectedSortable" data-rel="${resultElement.id}">
 
@@ -302,10 +306,11 @@ $(document).ready(() => {
 
   // Delete guest from guest-list
   $('#guest-list').click(function(e) {
+    const nome_cognome = e.target.parentElement.childNodes[1].innerHTML;
     e.preventDefault();
     if (e.target.className === 'delete-btn') {
       $('.modal-confirm').html(`
-        <h3>Sei sicuro di voler eliminare ${e.target.parentElement.childNodes[1].innerHTML}?</h3>
+        <h3>Sei sicuro di voler eliminare ${nome_cognome}?</h3>
         <div class="confirm-btn-set">
           <div class="confirm">
             <button id="si" class="btn"><i class="fas fa-check-circle"></i> Sì</button>
@@ -314,8 +319,10 @@ $(document).ready(() => {
         </div>
       `);
 
+      // Show confirm modal
       $('#content-confirm').show();
 
+      // If "Si" is clicked delete record
       $('#si').click(function() {
         const formData = new FormData();
         const id = e.target.parentElement.id;
@@ -326,20 +333,72 @@ $(document).ready(() => {
         })
           .then(response => response.text())
           .then(result => {
-            $.get('./includes/guests_refresh.php', function(data) {
-              $('#guest-list').html(data);
-              console.log(result);
-            });
+            $(`#guest-list > #${id}`).remove();
+
+            console.log(`${nome_cognome} ${result}`);
+
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
 
-            toastr.success('Opesti cancellato.', 'Successo', { timeOut: 5000 });
+            toastr.success(`${nome_cognome} cancellato.`, 'Successo', { timeOut: 5000 });
           })
           .catch(err => {
             console.error(err.message);
           });
       });
 
+      // Else hide confirm modal
+      $('#no').click(function() {
+        $('.modal-confirm').html('');
+        $('#content-confirm').hide();
+      });
+    }
+  });
+
+  // Delete table from table-container
+  $('#table-container').click(function(e) {
+    e.preventDefault();
+    if (e.target.className === 'delete-btn') {
+      console.log(e.target.parentElement.parentElement.attributes[0].value);
+      const nome_tavolo = e.target.parentElement.parentElement.attributes[2].value;
+      $('.modal-confirm').html(`
+        <h3>Sei sicuro di voler eliminare il tavolo ${nome_tavolo}?</h3>
+        <div class="confirm-btn-set">
+          <div class="confirm">
+            <button id="si" class="btn"><i class="fas fa-check-circle"></i> Sì</button>
+            <button id="no" class="btn"><i class="fas fa-times-circle"></i> No</button>
+          </div>
+        </div>
+      `);
+
+      // Show confirm modal
+      $('#content-confirm').show();
+
+      // If "Si" is clicked delete record
+      $('#si').click(function() {
+        const formData = new FormData();
+        const id = e.target.parentElement.parentElement.attributes[0].value;
+        formData.append('id', id);
+        fetch(`${url}api/tables_delete.php`, {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => response.text())
+          .then(result => {
+            $(`#table-container > #${id}`).remove();
+            console.log(`Tavolo ${nome_tavolo} ${result}`);
+
+            $('.modal-confirm').html('');
+            $('#content-confirm').hide();
+
+            toastr.success(`Tavolo ${nome_tavolo} cancellato.`, 'Successo', { timeOut: 5000 });
+          })
+          .catch(err => {
+            console.error(err.message);
+          });
+      });
+
+      // Else hide confirm modal
       $('#no').click(function() {
         $('.modal-confirm').html('');
         $('#content-confirm').hide();

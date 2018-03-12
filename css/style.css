@@ -21,6 +21,14 @@ body {
 
 /* Customs */
 
+.ui-sortable-placeholder {
+  /* border: 3px dashed #aaa; */
+  height: 3.5em;
+  width: 90%;
+  margin: 1em auto;
+  background: #5f4a4a;
+}
+
 .modal-confirm > h3 {
   text-align: center;
 }
@@ -190,6 +198,10 @@ select::-ms-expand {
   border-bottom-right-radius: 0.5em;
   background-color: #897474;
   overflow: auto;
+}
+
+.place-holder {
+  background: #000;
 }
 
 .guest {

@@ -49,12 +49,11 @@ $(document).ready(() => {
       })
         .then(response => response.json())
         .then(result => {
-          const resultElement = result;
           $(`#delete${id}`).show();
           console.log(
-            `${resultElement.nome} ${resultElement.cognome}(id: ${
-              resultElement.id
-            }) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${resultElement.tavolo_id})`
+            `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
+              result.tavolo_id
+            })`
           );
         })
         .catch(err => {
@@ -68,14 +67,12 @@ $(document).ready(() => {
       })
         .then(response => response.json())
         .then(result => {
-          const resultElement = result;
-
           $(`.table-body #${id} button.delete-btn`).hide();
 
           console.log(
-            `${resultElement.nome} ${resultElement.cognome}(id: ${
-              resultElement.id
-            }) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${resultElement.tavolo_id})`
+            `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
+              result.tavolo_id
+            })`
           );
         })
         .catch(err => {
@@ -176,7 +173,6 @@ $(document).ready(() => {
       })
         .then(response => response.json())
         .then(result => {
-          const resultElement = result;
           console.log(result);
           $('#add-guest-modal')
             .find("input[name='nome']")
@@ -189,13 +185,13 @@ $(document).ready(() => {
             .val('');
 
           $('#guest-list').append(`
-            <div class="guest" id="${resultElement.id}"  tavolo-id="${resultElement.tavolo_id}">
-              <p class="family-name">${resultElement.nome} ${resultElement.cognome}</p>
-              <p class="number-adults">${resultElement.adulti}</p>
-              <p class="number-babies">${resultElement.bambini}</p>
-              <p class="number-highchair">${resultElement.seggioloni}</p>
-              <p class="number-intolerant">${resultElement.note_intolleranze}</p>
-              <button id="delete${resultElement.id}" type="button" class="delete-btn">
+            <div class="guest" id="${result.id}"  tavolo-id="${result.tavolo_id}">
+              <p class="family-name">${result.nome} ${result.cognome}</p>
+              <p class="number-adults">${result.adulti}</p>
+              <p class="number-babies">${result.bambini}</p>
+              <p class="number-highchair">${result.seggioloni}</p>
+              <p class="number-intolerant">${result.note_intolleranze}</p>
+              <button id="delete${result.id}" type="button" class="delete-btn">
                 <i class="fas fa-minus-circle"></i>
               </button>
             </div>
@@ -257,7 +253,6 @@ $(document).ready(() => {
       })
         .then(response => response.json())
         .then(result => {
-          const resultElement = result;
           $('#add-table-modal')
             .find("select[name='nome_tavolo']")
             .val('');
@@ -267,17 +262,15 @@ $(document).ready(() => {
           console.log(result);
 
           $('#table-container').append(`
-            <div id="${resultElement.id}" class="table" tavolo-nome="${resultElement.nome_tavolo} ${
-            resultElement.numero_tavolo
-          }">
+            <div id="${result.id}" class="table" tavolo-nome="${result.nome_tavolo} ${result.numero_tavolo}">
               <div class="table-header">
-                <p class="table-id" hidden>${resultElement.id}</p>
-                <p class="table-name">${resultElement.nome_tavolo} ${resultElement.numero_tavolo}</p>
-                <button id="delete${resultElement.id}" type="button" title="Elimina tavolo" class="delete-btn">
+                <p class="table-id" hidden>${result.id}</p>
+                <p class="table-name">${result.nome_tavolo} ${result.numero_tavolo}</p>
+                <button id="delete${result.id}" type="button" title="Elimina tavolo" class="delete-btn">
                   <i class="fas fa-minus-circle"></i>
                 </button>
               </div>
-              <div class="table-body connectedSortable" data-rel="${resultElement.id}">
+              <div class="table-body connectedSortable" data-rel="${result.id}">
 
               </div>
             </div>`);
@@ -339,7 +332,7 @@ $(document).ready(() => {
           .then(result => {
             $(`#guest-list > #${id}`).remove();
 
-            console.log(`${nome_cognome} ${result}`);
+            console.log(`${nome_cognome} cancellato`);
 
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
@@ -390,7 +383,7 @@ $(document).ready(() => {
           .then(response => response.text())
           .then(result => {
             $(`#table-container > #${id}`).remove();
-            console.log(`Tavolo ${nome_tavolo} ${result}`);
+            console.log(`Tavolo ${nome_tavolo} cancellato`);
 
             $('.modal-confirm').html('');
             $('#content-confirm').hide();

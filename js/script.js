@@ -47,9 +47,9 @@ $(document).ready(() => {
         method: 'POST',
         body: formData
       })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => {
-          const resultElement = JSON.parse(result);
+          const resultElement = result;
           $(`#delete${id}`).show();
           console.log(
             `${resultElement.nome} ${resultElement.cognome}(id: ${
@@ -66,9 +66,9 @@ $(document).ready(() => {
         method: 'POST',
         body: formData
       })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => {
-          const resultElement = JSON.parse(result);
+          const resultElement = result;
 
           $(`.table-body #${id} button.delete-btn`).hide();
 
@@ -174,9 +174,9 @@ $(document).ready(() => {
         method: 'POST',
         body: formData
       })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => {
-          const resultElement = JSON.parse(result);
+          const resultElement = result;
           console.log(result);
           $('#add-guest-modal')
             .find("input[name='nome']")
@@ -205,9 +205,6 @@ $(document).ready(() => {
             connectWith: '.connectedSortable',
             placeholder: 'ui-sortable-placeholder',
             cursor: 'move',
-            over: function(ev1, ui1) {
-              console.log('Yes');
-            },
             receive(ev, ui) {
               guestUpdate(e, ui);
             }
@@ -217,9 +214,6 @@ $(document).ready(() => {
             connectWith: '.connectedSortable',
             placeholder: 'ui-sortable-placeholder',
             cursor: 'move',
-            over: function(ev1, ui1) {
-              console.log('Yes');
-            },
             receive(ev, ui) {
               guestUpdate(e, ui);
             }
@@ -261,9 +255,9 @@ $(document).ready(() => {
         method: 'POST',
         body: formData
       })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(result => {
-          const resultElement = JSON.parse(result);
+          const resultElement = result;
           $('#add-table-modal')
             .find("select[name='nome_tavolo']")
             .val('');

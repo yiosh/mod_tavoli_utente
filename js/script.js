@@ -84,9 +84,10 @@ $(document).ready(() => {
     }
   }
 
-  // Makesguests inside the guest-list sortable
+  // Makes guests inside the guest-list sortable
   $('#guest-list').sortable({
     connectWith: '.connectedSortable',
+    placeholder: 'ui-sortable-placeholder',
     cursor: 'move',
     receive(e, ui) {
       guestUpdate(e, ui);
@@ -96,6 +97,7 @@ $(document).ready(() => {
   // Makes guests inside tables sortable
   $('.table-body').sortable({
     connectWith: '.connectedSortable',
+    placeholder: 'ui-sortable-placeholder',
     cursor: 'move',
     receive(e, ui) {
       guestUpdate(e, ui);
@@ -201,7 +203,11 @@ $(document).ready(() => {
 
           $('#guest-list').sortable({
             connectWith: '.connectedSortable',
+            placeholder: 'ui-sortable-placeholder',
             cursor: 'move',
+            over: function(ev1, ui1) {
+              console.log('Yes');
+            },
             receive(ev, ui) {
               guestUpdate(e, ui);
             }
@@ -209,7 +215,11 @@ $(document).ready(() => {
 
           $('.table-body').sortable({
             connectWith: '.connectedSortable',
+            placeholder: 'ui-sortable-placeholder',
             cursor: 'move',
+            over: function(ev1, ui1) {
+              console.log('Yes');
+            },
             receive(ev, ui) {
               guestUpdate(e, ui);
             }

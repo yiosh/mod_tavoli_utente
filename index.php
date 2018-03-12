@@ -53,7 +53,7 @@
             <p class="number-babies"><?php echo $guest['bambini'] ?></p>
             <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
             <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
-            <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina" class="delete-btn">
+            <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina ospite" class="delete-btn">
               <i class="fas fa-minus-circle"></i>
             </button>
           </div>
@@ -87,10 +87,12 @@
       <!-- TABLE CONTAINER -->
       <div id="table-container" class="table-container connectedSortable">
         <?php foreach($result_tavoli as $table) : ?>
-          <div class="table" data-rel="<?php echo $table['nome_tavolo'].$table['numero_tavolo']; ?>">
+          <div id="<?php echo $table['id']; ?>" class="table" tavolo-nome="<?php echo $table['nome_tavolo']." ".$table['numero_tavolo']; ?>">
             <div class="table-header">
-              <p class="table-id" hidden><?php echo $table['id']; ?></p>
-              <p class="table-name"><strong><?php echo $table['nome_tavolo']." ".$table['numero_tavolo']; ?></strong></p>
+              <p class="table-name"><?php echo $table['nome_tavolo']." ".$table['numero_tavolo']; ?></p>
+              <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina tavolo" class="delete-btn">
+                <i class="fas fa-minus-circle"></i>
+              </button>
             </div>
 
             <!-- TABLE BODY CONTAINER-->
@@ -105,7 +107,7 @@
                         <p class="number-babies"><?php echo $guest['bambini'] ?></p>
                         <p class="number-highchair"><?php echo $guest['seggioloni'] ?></p>
                         <p class="number-intolerant"><?php echo $guest['note_intolleranze'] ?></p>
-                        <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina" class="delete-btn" style="display: none;">
+                        <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina ospite" class="delete-btn" style="display: none;">
                           <i class="fas fa-minus-circle"></i>
                         </button>
                       </div>

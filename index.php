@@ -126,7 +126,7 @@
       <!-- GUEST MODAL -->
       <div id="add-guest-modal" class="modal">
         <div class="modal-content">
-          <i id="close1" class="close-btn fas fa-times"></i>
+          <button id="close1" class="close-btn"><i class="fas fa-times"></i></button>
           <form method="POST" action="api/guests_submit.php">
             <h3><i class="far fa-address-card"></i> Aggiungi Ospite</h3>
             <br>
@@ -170,7 +170,7 @@
       <!-- TABLE MODAL -->
       <div id="add-table-modal" class="modal">
         <div class="modal-content">
-          <i id="close2" class="close-btn fas fa-times"></i>
+          <button id="close2" class="close-btn"><i class="fas fa-times"></i></button>
           <form method="POST" action="api/tables_submit.php">
             <h3><i class="fas fa-table"></i> Aggiungi Tabella</h3>
             <div id="message"></div>

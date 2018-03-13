@@ -1,3 +1,12 @@
+:root {
+  --main-bg-color: #ffffff;
+  --second-bg-color: #fcfbfc;
+  --third-bg-color: #d8cbcc;
+  --fourth-bg-color: #fef9f8;
+  --fifth-bg-color: #5c4446;
+  --sixth-bg-color: #424343;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -26,7 +35,7 @@ body {
   height: 3.5em;
   width: 90%;
   margin: 1em auto;
-  background: #5f4a4a;
+  background: var(--fourth-bg-color);
 }
 
 .modal-confirm > h3 {
@@ -51,12 +60,12 @@ body {
 
 select {
   margin: 50px;
-  border: 1px solid #111;
+  border: 1px solid var(--sixth-bg-color);
   background: transparent;
   width: 150px;
   padding: 5px 35px 5px 5px;
   font-size: 16px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--fifth-bg-color);
   height: 34px;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -78,7 +87,7 @@ select::-ms-expand {
 }
 
 .container {
-  background-color: #3e4149;
+  background-color: #ffffff;
   height: 100vh;
   width: 100vw;
   display: grid;
@@ -94,8 +103,7 @@ select::-ms-expand {
   max-height: 100%;
   overflow: hidden;
   padding: 1em;
-  border-radius: 0.5em;
-  background-color: #d6c8c8;
+  background-color: var(--second-bg-color);
   overflow: hidden;
   margin-bottom: 1rem;
 }
@@ -108,13 +116,16 @@ select::-ms-expand {
   justify-content: space-between;
 }
 
+.family-name {
+  text-align: left;
+}
 .searchbox {
   flex: 2;
   display: flex;
   justify-content: space-between;
   margin: 0em 1em 0em 0em;
-  background-color: #fff8f8;
-  border-radius: 0.5em;
+  background-color: var(--fourth-bg-color);
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .searchbox #search-icon {
@@ -127,46 +138,46 @@ select::-ms-expand {
   margin: 0em 0em 0em 1em;
   text-align: left;
   border: none;
-  color: #5f4a4a;
-  background-color: #fff8f8;
+  color: var(--fifth-bg-color);
+  background-color: var(--fourth-bg-color);
 }
 
 .btn {
   cursor: pointer;
   font-weight: bold;
-  background-color: #5f4a4a;
+  background-color: var(--fifth-bg-color);
   padding: 0.5em;
   /* border: 0.15em solid #FFF8F8; */
   border: none;
-  border-radius: 0.4rem;
-  color: #fff;
+  color: var(--main-bg-color);
 }
 
 .btn:hover {
-  background-color: #503e3e;
+  background-color: var(--sixth-bg-color);
 }
 
 .delete-btn {
+  text-align: right;
   cursor: pointer;
   font-weight: bold;
-  background-color: #fff;
+  background-color: var(--main-bg-color);
   /* border: 0.15em solid #FFF8F8; */
   border: none;
-  color: #917b7b;
+  color: var(--fifth-bg-color);
 }
 
 .delete-btn:hover {
-  color: #5f4a4a;
+  color: var(--sixth-bg-color);
 }
 
 #search-btn {
   margin: 0em 0.5em;
   border: none;
-  background-color: #fff8f8;
+  background-color: var(--third-bg-color);
 }
 
 .fa-search {
-  color: #917b7b;
+  color: var(--fifth-bg-color);
 }
 
 .add-guest {
@@ -181,9 +192,7 @@ select::-ms-expand {
   display: grid;
   grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
   color: #fff;
-  border-top-left-radius: 0.5em;
-  border-top-right-radius: 0.5em;
-  background-color: #897474;
+  background-color: var(--third-bg-color);
 }
 
 .list-item {
@@ -193,32 +202,26 @@ select::-ms-expand {
 .guest-list {
   min-height: 63%;
   max-height: 63%;
-  border: 0.1em solid #897474;
-  border-bottom-left-radius: 0.5em;
-  border-bottom-right-radius: 0.5em;
-  background-color: #897474;
+  border: 0.1em solid var(--third-bg-color);
+  background-color: var(--third-bg-color);
   overflow: auto;
-}
-
-.place-holder {
-  background: #000;
 }
 
 .guest {
   display: grid;
-  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 2fr;
-  background-color: #fff;
-  border: 0.1em solid #fff;
-  border-radius: 0.5em;
-  margin: 0.8em;
+  grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr;
+  background-color: var(--main-bg-color);
+  border: 0.1em solid var(--main-bg-color);
+  margin: 0.8em auto;
   text-align: center;
-  color: #5f4a4a;
+  color: var(--fifth-bg-color);
   padding: 1rem;
+  width: 95%;
   overflow: auto;
 }
 
 .guest:hover {
-  border: 0.2em solid #5f4a4a;
+  border: 0.2em solid var(--fifth-bg-color);
 }
 
 .assigned-toggle input[type="radio"],
@@ -239,8 +242,8 @@ select::-ms-expand {
 
 .assign-btns input:checked + span,
 .sposi-radio input:checked + span {
-  background-color: #404040;
-  color: #f7f7f7;
+  background-color: var(--sixth-bg-color);
+  color: var(--fourth-bg-color);
 }
 
 .sposi-radio {
@@ -253,8 +256,7 @@ select::-ms-expand {
   min-height: 100%;
   max-height: 100%;
   margin: 0;
-  border-radius: 0.5em;
-  background-color: #d6c8c8;
+  background-color: var(--second-bg-color);
   overflow: hidden;
 }
 
@@ -263,15 +265,20 @@ select::-ms-expand {
 }
 
 .table-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1em;
   box-sizing: border-box;
   height: 250px;
   overflow-y: auto;
   margin-top: 1em;
-  height: 85%;
+  height: 93.5%;
+  width: 100%;
+  padding: 0.5em;
 }
 
 .table-header {
-  background-color: #fff8f8;
+  background-color: var(--fourth-bg-color);
   display: flex;
   flex-direction: row;
   padding: 0 1em;
@@ -279,23 +286,20 @@ select::-ms-expand {
 }
 
 .table-header > .delete-btn {
-  background-color: #fff8f8;
+  background-color: var(--fourth-bg-color);
 }
 
 .table {
+  display: block;
   box-sizing: border-box;
-  min-height: 200px;
-  height: 96%;
-  width: 96%;
-  background-color: #897474;
-  margin: 0em 0em 0.9em 0em;
-  border-radius: 0.5em;
+  background-color: var(--third-bg-color);
+  box-shadow: 0 6px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
 .table-name {
   margin: 0em;
   padding: 0.5em;
-  color: #635252;
+  color: var(--fifth-bg-color);
   font-size: 1.2em;
 }
 
@@ -303,7 +307,7 @@ select::-ms-expand {
   height: 100%;
   width: 100%;
   min-height: 12rem;
-  max-height: 17.5rem;
+  /* max-height: 17.5rem; */
   min-width: 10rem;
   overflow-y: auto;
 }
@@ -329,8 +333,8 @@ select::-ms-expand {
 .modal h3 {
   margin: 0;
   font-size: 2em;
-  color: #5f4a4a;
-  border-bottom: 0.1em solid #5f4a4a;
+  color: var(--fifth-bg-color);
+  border-bottom: 0.1em solid var(--fifth-bg-color);
 }
 
 .modal .btn {
@@ -361,12 +365,11 @@ form {
 .modal-content {
   display: flex;
   flex-direction: column;
-  border-radius: 0.5em;
-  background-color: #fefefe;
+  background-color: var(--second-bg-color);
   margin: 5% auto;
   padding: 1.5em;
   border: none;
-  width: 50%;
+  width: 90%;
 }
 
 .form-text {
@@ -374,10 +377,9 @@ form {
   width: 95%;
   margin: auto;
   padding: 0.5em;
-  color: #fff;
-  background-color: #d6c8c8;
+  color: var(--fifth-bg-color);
+  background-color: var(--third-bg-color);
   border: none;
-  border-radius: 0.5em;
 }
 
 #input-adults,
@@ -388,21 +390,23 @@ form {
 }
 
 .label {
-  color: #3b3b3b;
+  color: var(--sixth-bg-color);
   font-size: 1.5em;
 }
 
 .close-btn {
   align-self: flex-end;
   margin: 0;
-  color: #aaa;
+  color: var(--fifth-bg-color);
   font-size: 3em;
   font-weight: bold;
+  border: none;
+  background: none;
 }
 
 .close-btn:hover,
 .close-btn:focus {
-  color: black;
+  color: var(--sixth-bg-color);
   text-decoration: none;
   cursor: pointer;
 }
@@ -413,19 +417,9 @@ form {
 }
 
 @media only screen and (min-width: 401px) and (max-width: 960px) {
-  .table-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
 
 @media only screen and (min-width: 961px) {
-  .table {
-    min-width: 290px;
-    min-height: 240px;
-    max-height: 300px;
-  }
-
   .section {
     min-height: 900px;
     height: 100%;
@@ -440,8 +434,8 @@ form {
   }
 
   .guest-list {
-    min-height: 80vh;
-    max-height: 80vh;
+    min-height: 88vh;
+    max-height: 88vh;
   }
 
   .container {
@@ -476,23 +470,9 @@ form {
   .btn-add-table {
     margin: 0 5rem 1rem 0;
   }
-  .table-container {
-    height: 95%;
-    display: grid;
-    grid-column-gap: 1%;
-    grid-row-gap: 1%;
-    grid-template-columns: repeat(3, 33%);
-    overflow-x: hidden;
-    overflow-y: auto;
-    margin-top: 0;
-    border-radius: 0.5rem;
-    padding-bottom: 1em;
-    margin-bottom: 1rem;
-  }
 
-  .table-body {
-    max-height: 16.5rem;
-    max-width: 34rem;
+  .table {
+    margin: 0;
   }
 
   .assign-btns {
@@ -502,5 +482,14 @@ form {
 
   .assign-btns .btn {
     padding: 0.8em;
+  }
+
+  .table-container {
+    height: 95%;
+    margin-top: 0;
+  }
+
+  .modal-content {
+    width: 50%;
   }
 }

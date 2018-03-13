@@ -1,6 +1,4 @@
 $(document).ready(() => {
-  const url = './';
-
   // Searchbar
   $('.search-txt').keyup(function() {
     let search_str = $('.searchbox')
@@ -20,65 +18,66 @@ $(document).ready(() => {
     }
   });
 
-  // Updates guest data when it is dragged to a different table
   function guestUpdate(e, ui) {
-    let nome_tavolo = ui.item[0].parentElement.parentElement.children[0].children[1].innerText;
-    let tavolo_id = ui.item[0].parentElement.dataset.rel;
+    const tavolo_id = 0;
+    const nome_tavolo = 'Elenco degli ospiti';
     const id = ui.item[0].id;
+    $(`#guest-list #${id}`).attr('tavolo-id', 0);
 
-    if (nome_tavolo == ' Aggiungi Ospite') {
-      nome_tavolo = 'Elenco degli Ospiti';
-    }
+    const formData = {
+      user_id: id,
+      tavolo_id: tavolo_id
+    };
 
-    if (tavolo_id == 'guest-list connectedSortable ui-sortable') {
-      tavolo_id = 0;
-    }
+    $.ajax({
+      type: 'POST',
+      url: 'api/tables_update.php',
+      data: formData,
+      success: function(response) {
+        const result = JSON.parse(response);
+        $(`#delete${id}`).show();
+        console.log(
+          `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
+            result.tavolo_id
+          })`
+        );
+      },
+      error: function(errorMessage) {
+        console.log(errorMessage);
+        toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+      }
+    });
+  }
 
-    const formData = new FormData();
+  function tableUpdate(e, ui, tbody) {
+    const tavolo_id = ui.item[0].parentElement.dataset.rel;
+    // const nome_tavolo = 'test';
+    const id = ui.item[0].id;
+    $(`#${tbody} #${id}`).attr('tavolo-id', tavolo_id);
 
-    formData.append('user_id', ui.item[0].id);
-    formData.append('tavolo_id', tavolo_id);
-    formData.append('nome_tavolo', nome_tavolo);
-    formData.append('nome_cognome', ui.item[0].children[0].innerText);
+    const formData = {
+      user_id: id,
+      tavolo_id: tavolo_id
+    };
 
-    if (tavolo_id == 0) {
-      // When it gets sorted it updates fl_tavoli
-      fetch('./api/tables_update.php', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          $(`#delete${id}`).show();
-          console.log(
-            `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
-              result.tavolo_id
-            })`
-          );
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
-    } else if (tavolo_id > 0) {
-      // When it gets sorted it updates fl_tavoli
-      fetch('./api/tables_update.php', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          $(`.table-body #${id} button.delete-btn`).hide();
+    $.ajax({
+      type: 'POST',
+      url: 'api/tables_update.php',
+      data: formData,
+      success: function(response) {
+        const result = JSON.parse(response);
+        // console.log(response);
+        $(`.table-body #${id} button.delete-btn`).hide();
 
-          console.log(
-            `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
-              result.tavolo_id
-            })`
-          );
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
-    }
+        console.log(
+          `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a (tavolo_id: ${result.tavolo_id})`
+        );
+      },
+      error: function(errorMessage) {
+        console.log(errorMessage);
+        toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+      }
+    });
   }
 
   // Makes guests inside the guest-list sortable
@@ -97,7 +96,8 @@ $(document).ready(() => {
     placeholder: 'ui-sortable-placeholder',
     cursor: 'move',
     receive(e, ui) {
-      guestUpdate(e, ui);
+      const tbody = this.attributes[0].value;
+      tableUpdate(e, ui, tbody);
     }
   });
 
@@ -135,169 +135,123 @@ $(document).ready(() => {
   // Add a new guest
   $('#submit-guest').click(function(e) {
     e.preventDefault();
-    const form_action = $('#add-guest-modal')
+    const $form_action = $('#add-guest-modal')
       .find('form')
       .attr('action');
-    const nome = $('#add-guest-modal')
-      .find("input[name='nome']")
-      .val();
-    const cognome = $('#add-guest-modal')
-      .find("input[name='cognome']")
-      .val();
-    const adulti = $('#add-guest-modal')
-      .find("input[name='adulti']")
-      .val();
-    const bambini = $('#add-guest-modal')
-      .find("input[name='bambini']")
-      .val();
-    const seggioloni = $('#add-guest-modal')
-      .find("input[name='seggioloni']")
-      .val();
-    const note_intolleranze = $('#add-guest-modal')
-      .find("input[name='note_intolleranze']")
-      .val();
+    const $nome = $('#add-guest-modal').find("input[name='nome']");
+    const $cognome = $('#add-guest-modal').find("input[name='cognome']");
+    const $adulti = $('#add-guest-modal').find("input[name='adulti']");
+    const $bambini = $('#add-guest-modal').find("input[name='bambini']");
+    const $seggioloni = $('#add-guest-modal').find("input[name='seggioloni']");
+    const $note_intolleranze = $('#add-guest-modal').find("input[name='note_intolleranze']");
 
-    if (nome != '' || cognome != '' || note_intolleranze != '') {
-      let formData = new FormData();
-      formData.append('nome', nome);
-      formData.append('cognome', cognome);
-      formData.append('adulti', adulti);
-      formData.append('bambini', bambini);
-      formData.append('seggioloni', seggioloni);
-      formData.append('note_intolleranze', note_intolleranze);
+    const guestData = {
+      nome: $nome.val(),
+      cognome: $cognome.val(),
+      adulti: $adulti.val(),
+      bambini: $bambini.val(),
+      seggioloni: $seggioloni.val(),
+      note_intolleranze: $note_intolleranze.val()
+    };
 
-      // When it gets sorted it updates fl_tavoli
-      fetch(`${url}${form_action}`, {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          console.log(result);
-          $('#add-guest-modal')
-            .find("input[name='nome']")
-            .val('');
-          $('#add-guest-modal')
-            .find("input[name='cognome']")
-            .val('');
-          $('#add-guest-modal')
-            .find("input[name='note_intolleranze']")
-            .val('');
+    if ($nome.val() != '' || $cognome.val() != '' || $note_intolleranze.val() != '') {
+      $.ajax({
+        type: 'POST',
+        url: $form_action,
+        data: guestData,
+        success: function(newGuest) {
+          const response = JSON.parse(newGuest);
+          console.log(response);
+          console.log(newGuest);
+          $nome.val('');
+          $cognome.val('');
+          $note_intolleranze.val('');
 
           $('#guest-list').append(`
-            <div class="guest" id="${result.id}"  tavolo-id="${result.tavolo_id}">
-              <p class="family-name">${result.nome} ${result.cognome}</p>
-              <p class="number-adults">${result.adulti}</p>
-              <p class="number-babies">${result.bambini}</p>
-              <p class="number-highchair">${result.seggioloni}</p>
-              <p class="number-intolerant">${result.note_intolleranze}</p>
-              <button id="delete${result.id}" type="button" class="delete-btn">
-                <i class="fas fa-minus-circle"></i>
-              </button>
-            </div>
-          `);
-
-          $('#guest-list').sortable({
-            connectWith: '.connectedSortable',
-            placeholder: 'ui-sortable-placeholder',
-            cursor: 'move',
-            receive(ev, ui) {
-              guestUpdate(e, ui);
-            }
-          });
-
-          $('.table-body').sortable({
-            connectWith: '.connectedSortable',
-            placeholder: 'ui-sortable-placeholder',
-            cursor: 'move',
-            receive(ev, ui) {
-              guestUpdate(e, ui);
-            }
-          });
+              <div class="guest" id="${response.id}"  tavolo-id="${response.tavolo_id}">
+                <p class="family-name">${response.nome} ${response.cognome}</p>
+                <p class="number-adults">${response.adulti}</p>
+                <p class="number-babies">${response.bambini}</p>
+                <p class="number-highchair">${response.seggioloni}</p>
+                <p class="number-intolerant">${response.note_intolleranze}</p>
+                <button id="delete${response.id}" type="button" class="delete-btn">
+                  <i class="fas fa-minus-circle"></i>
+                </button>
+              </div>
+            `);
 
           $('#add-guest-modal').hide();
 
-          toastr.success(`${nome} ${cognome} creata con successo`, 'Successo', { timeOut: 5000 });
-        })
-        .catch(err => {
-          console.error(err.message);
-          toastr.error(err, 'Avviso di errore', { timeOut: 5000 });
-        });
-    } else {
-      alert('You left a field blank');
+          toastr.success(`${$nome.val()} ${$cognome.val()} creata con successo`, 'Successo', { timeOut: 5000 });
+        },
+        error: function(errorMessage) {
+          console.log(errorMessage);
+          toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+        }
+      });
     }
   });
 
   // Add a new table
   $('#submit-table').click(function(e) {
     e.preventDefault();
-    const form_action = $('#add-table-modal')
+    const $form_action = $('#add-table-modal')
       .find('form')
       .attr('action');
 
-    const numero_tavolo = $('#add-table-modal')
-      .find("input[name='numero_tavolo']")
-      .val();
-    const nome_tavolo = $('#add-table-modal')
-      .find("select[name='nome_tavolo']")
-      .val();
+    const $numero_tavolo = $('#add-table-modal').find("input[name='numero_tavolo']");
+    const $nome_tavolo = $('#add-table-modal').find("select[name='nome_tavolo']");
 
-    const formData = new FormData();
-    formData.append('numero_tavolo', numero_tavolo);
-    formData.append('nome_tavolo', nome_tavolo);
+    const tableData = {
+      nome_tavolo: $nome_tavolo.val(),
+      numero_tavolo: $numero_tavolo.val()
+    };
 
-    if (nome_tavolo != '') {
-      fetch(`${url}${form_action}`, {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(result => {
-          $('#add-table-modal')
-            .find("select[name='nome_tavolo']")
-            .val('');
-          $('#add-table-modal')
-            .find("select[name='numero_tavolo']")
-            .val('');
-          console.log(result);
+    if ($nome_tavolo.val() != '' && $numero_tavolo.val() != '') {
+      $.ajax({
+        type: 'POST',
+        url: $form_action,
+        data: tableData,
+        success: function(newTable) {
+          const response = JSON.parse(newTable);
+          console.log(response);
+          $numero_tavolo.val('');
 
           $('#table-container').append(`
-            <div id="${result.id}" class="table" tavolo-nome="${result.nome_tavolo} ${result.numero_tavolo}">
+            <div id="${response.id}" class="table" tavolo-nome="${response.nome_tavolo} ${response.numero_tavolo}">
               <div class="table-header">
-                <p class="table-id" hidden>${result.id}</p>
-                <p class="table-name">${result.nome_tavolo} ${result.numero_tavolo}</p>
-                <button id="delete${result.id}" type="button" title="Elimina tavolo" class="delete-btn">
+                <p class="table-id" hidden>${response.id}</p>
+                <p class="table-name">${response.nome_tavolo} ${response.numero_tavolo}</p>
+                <button id="delete${response.id}" type="button" title="Elimina tavolo" class="delete-btn">
                   <i class="fas fa-minus-circle"></i>
                 </button>
               </div>
-              <div class="table-body connectedSortable" data-rel="${result.id}">
+              <div class="table-body connectedSortable" data-rel="${response.id}">
 
               </div>
             </div>`);
 
-          $('#guest-list').sortable({
-            connectWith: '.connectedSortable',
-            cursor: 'move',
-            receive(ev, ui) {
-              guestUpdate(e, ui);
-            }
-          });
-
           $('.table-body').sortable({
             connectWith: '.connectedSortable',
+            placeholder: 'ui-sortable-placeholder',
             cursor: 'move',
             receive(ev, ui) {
-              guestUpdate(e, ui);
+              const tbody = this.attributes[0].value;
+              tableUpdate(e, ui, tbody);
             }
           });
 
           $('#add-table-modal').hide();
 
-          toastr.success(`${nome_tavolo} ${numero_tavolo} creata con successo.`, 'Successo', { timeOut: 5000 });
-        })
-        .catch(err => {
-          console.error(err.message);
-        });
+          toastr.success(`${response.nome_tavolo} ${response.numero_tavolo} creata con successo.`, 'Successo', {
+            timeOut: 5000
+          });
+        },
+        error: function(errorMessage) {
+          console.log(errorMessage);
+          toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+        }
+      });
     }
   });
 
@@ -321,27 +275,27 @@ $(document).ready(() => {
 
       // If "Si" is clicked delete record
       $('#si').click(function() {
-        const formData = new FormData();
         const id = e.target.parentElement.id;
-        formData.append('id', id);
-        fetch(`${url}api/guests_delete.php`, {
-          method: 'POST',
-          body: formData
-        })
-          .then(response => response.text())
-          .then(result => {
+
+        $.ajax({
+          type: 'POST',
+          url: 'api/guests_delete.php',
+          data: { id: id },
+          success: function(response) {
             $(`#guest-list > #${id}`).remove();
 
-            console.log(`${nome_cognome} cancellato`);
+            console.log(`${nome_cognome} ${response}`);
 
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
 
             toastr.success(`${nome_cognome} cancellato.`, 'Successo', { timeOut: 5000 });
-          })
-          .catch(err => {
-            console.error(err.message);
-          });
+          },
+          error: function(errorMessage) {
+            console.log(errorMessage);
+            toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+          }
+        });
       });
 
       // Else hide confirm modal
@@ -355,8 +309,8 @@ $(document).ready(() => {
   // Delete table from table-container
   $('#table-container').click(function(e) {
     e.preventDefault();
+
     if (e.target.className === 'delete-btn') {
-      console.log(e.target.parentElement.parentElement.attributes[0].value);
       const nome_tavolo = e.target.parentElement.parentElement.attributes[2].value;
       $('.modal-confirm').html(`
         <h3>Sei sicuro di voler eliminare il tavolo ${nome_tavolo}?</h3>
@@ -373,26 +327,54 @@ $(document).ready(() => {
 
       // If "Si" is clicked delete record
       $('#si').click(function() {
-        const formData = new FormData();
         const id = e.target.parentElement.parentElement.attributes[0].value;
-        formData.append('id', id);
-        fetch(`${url}api/tables_delete.php`, {
-          method: 'POST',
-          body: formData
-        })
-          .then(response => response.text())
-          .then(result => {
+
+        $.ajax({
+          type: 'POST',
+          url: 'api/tables_delete.php',
+          data: { id: id },
+          success: function(response) {
             $(`#table-container > #${id}`).remove();
-            console.log(`Tavolo ${nome_tavolo} cancellato`);
+            console.log(`Tavolo ${nome_tavolo} ${response}`);
 
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
 
+            $.ajax({
+              type: 'GET',
+              url: 'api/guests_fetch.php',
+              success: function(res) {
+                let guests = JSON.parse(res);
+                $('#guest-list').html('');
+
+                $.each(guests, function(i, guest) {
+                  $('#guest-list').append(`
+                    <div class="guest" id="${guest.id}" tavolo-id="0">
+                      <p class="family-name">${guest.nome} ${guest.cognome}</p>
+                      <p class="number-adults">${guest.adulti}</p>
+                      <p class="number-babies">${guest.bambini}</p>
+                      <p class="number-highchair">${guest.seggioloni}</p>
+                      <p class="number-intolerant">${guest.note_intolleranze}</p>
+                      <button id="delete${guest.id}" type="button" class="delete-btn">
+                        <i class="fas fa-minus-circle"></i>
+                      </button>
+                    </div>
+                  `);
+                });
+              },
+              error: function(errorMessage) {
+                console.log(errorMessage);
+                toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+              }
+            });
+
             toastr.success(`Tavolo ${nome_tavolo} cancellato.`, 'Successo', { timeOut: 5000 });
-          })
-          .catch(err => {
-            console.error(err.message);
-          });
+          },
+          error: function(errorMessage) {
+            console.log(errorMessage);
+            toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+          }
+        });
       });
 
       // Else hide confirm modal

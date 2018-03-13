@@ -8,7 +8,6 @@
   $tipo_tavolo_id = 2;
   $nome_tavolo = $_POST['nome_tavolo'];
   $numero_tavolo = $_POST['numero_tavolo'];
-  // $data_creazione = strtotime("now");
   
   $sql = "INSERT INTO fl_tavoli (numero_tavolo, layout_id, evento_id, nome_tavolo, data_creazione, tipo_tavolo_id)
   VALUES ('$numero_tavolo', '$layout_id', '$evento_id', '$nome_tavolo', (now()), '$tipo_tavolo_id')";

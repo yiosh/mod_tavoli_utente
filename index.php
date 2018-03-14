@@ -144,14 +144,17 @@
             <div class="numerical-textbox-container">
               <p class="form-input-numbers">
                 <label class="label" for="input-adults">Adulti</label>
+                <br>
                 <input id="input-adults" name="adulti" class="form-text" type="number" value="1" pattern="^[0-9]+$">
               </p>
               <p class="form-input-numbers">
                 <label class="label" for="input-babies">Bambini</label>
+                <br>
                 <input id="input-babies" name="bambini" class="form-text " type="number" value="0" pattern="^[0-9]+$">
               </p>
               <p class="form-input-numbers">
                 <label class="label" for="input-highchair">Seggioloni</label>
+                <br>
                 <input id="input-highchair" name="seggioloni" class="form-text" type="number" value="0" pattern="^[0-9]+$">
               </p>
             </div>
@@ -172,20 +175,24 @@
         <div class="modal-content">
           <button id="close2" class="close-btn"><i class="fas fa-times"></i></button>
           <form method="POST" action="api/tables_submit.php">
-            <h3><i class="fas fa-table"></i> Aggiungi Tabella</h3>
+            <h3><i class="fas fa-table"></i> Aggiungi Tavolo</h3>
             <div id="message"></div>
-            <p class="form-input-numbers">
-              <label class="label" for="numero_tavolo">Numero Tavolo</label>
+            <div class="table-modal-input">
+              <div class="form-input">
+                <label class="label">Nome Tavolo</label>
+                <br>
+                <select name="nome_tavolo" id="input-table-name">
+                  <option value="SPOSO">SPOSO</option>
+                  <option value="SPOSA">SPOSA</option>
+                </select>
+              </div>
+              <div class="form-input-numbers">
+                <label class="label" for="numero_tavolo">Numero Tavolo</label>
+                <br>
+                <input id="numero_tavolo" name="numero_tavolo" class="form-text" type="number" pattern="^[0-9]+$">
+              </div>
               <br>
-              <input id="numero_tavolo" name="numero_tavolo" class="form-text" type="number" pattern="^[0-9]+$">
-            </p>
-            <p class="form-input">
-              <label class="label">Nome Tavolo</label>
-              <select name="nome_tavolo" id="input-table-name">
-                <option value="SPOSO">SPOSO</option>
-                <option value="SPOSA">SPOSA</option>
-              </select>
-            </p>
+            </div>
             <div class="submit">
               <button type="submit" class="btn" id="submit-table" name="submit-table" >Crea Tavolo</button>
             </div>

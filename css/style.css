@@ -59,18 +59,17 @@ body {
 }
 
 select {
-  margin: 50px;
-  border: 1px solid var(--sixth-bg-color);
   background: transparent;
   width: 150px;
   padding: 5px 35px 5px 5px;
   font-size: 16px;
-  border: 1px solid var(--fifth-bg-color);
+  border: none;
   height: 34px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background: url(./sort-down.png) 96% / 15% no-repeat #eee;
+  background: url(./sort-down.png) 96% / 15% no-repeat var(--third-bg-color);
+  color: var(--fifth-bg-color);
 }
 
 /* CAUTION: IE hackery ahead */
@@ -352,10 +351,8 @@ select::-ms-expand {
   align-content: space-between;
 }
 
-p.form-input-numbers {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+.form-input-numbers > #numero_tavolo {
+  width: 5em;
 }
 
 form {
@@ -491,5 +488,9 @@ form {
 
   .modal-content {
     width: 50%;
+  }
+
+  .numerical-textbox-container {
+    width: 65%;
   }
 }

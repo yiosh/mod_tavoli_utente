@@ -18,9 +18,9 @@ $(document).ready(() => {
     }
   });
 
+  // Function to update guests when they are dragged to guest-list
   function guestUpdate(e, ui) {
     const tavolo_id = 0;
-    const nome_tavolo = 'Elenco degli ospiti';
     const id = ui.item[0].id;
     $(`#guest-list #${id}`).attr('tavolo-id', 0);
 
@@ -34,13 +34,8 @@ $(document).ready(() => {
       url: 'api/tables_update.php',
       data: formData,
       success: function(response) {
-        const result = JSON.parse(response);
         $(`#delete${id}`).show();
-        console.log(
-          `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a ${nome_tavolo}(tavolo_id: ${
-            result.tavolo_id
-          })`
-        );
+        console.log(`Aggiornamento riuscito: ${response}`);
       },
       error: function(errorMessage) {
         console.log(errorMessage);
@@ -49,6 +44,7 @@ $(document).ready(() => {
     });
   }
 
+  // Function to update guests when they are dragged to table-body
   function tableUpdate(e, ui, tbody) {
     const tavolo_id = ui.item[0].parentElement.dataset.rel;
     // const nome_tavolo = 'test';
@@ -65,13 +61,10 @@ $(document).ready(() => {
       url: 'api/tables_update.php',
       data: formData,
       success: function(response) {
-        const result = JSON.parse(response);
         // console.log(response);
         $(`.table-body #${id} button.delete-btn`).hide();
 
-        console.log(
-          `${result.nome} ${result.cognome}(id: ${result.id}) aggiunto correttamente a (tavolo_id: ${result.tavolo_id})`
-        );
+        console.log(`Aggiornamento riuscito: ${response}`);
       },
       error: function(errorMessage) {
         console.log(errorMessage);
@@ -120,13 +113,17 @@ $(document).ready(() => {
     $('#add-table-modal').hide();
   });
 
+  // Filter tables according to radio value
   $('.sposi-radio').change(() => {
     if ($('#tutti').is(':checked')) {
+      console.log('Tutti selezionato');
       $('.table').show();
     } else if ($('#sposo').is(':checked')) {
+      console.log('Sposo selezionato');
       $('.table').hide();
       $('.table[tavolo-nome*="SPOSO"]').show();
     } else if ($('#sposa').is(':checked')) {
+      console.log('Sposa selezionato');
       $('.table').hide();
       $('.table[tavolo-nome*="SPOSA"]').show();
     }
@@ -161,8 +158,8 @@ $(document).ready(() => {
         data: guestData,
         success: function(newGuest) {
           const response = JSON.parse(newGuest);
-          console.log(response);
-          console.log(newGuest);
+
+          console.log(`Opesti creata: ${newGuest}`);
           $nome.val('');
           $cognome.val('');
           $note_intolleranze.val('');
@@ -214,7 +211,7 @@ $(document).ready(() => {
         data: tableData,
         success: function(newTable) {
           const response = JSON.parse(newTable);
-          console.log(response);
+          console.log(`Tavolo creato: ${newTable}`);
           $numero_tavolo.val('');
 
           $('#table-container').append(`
@@ -284,12 +281,12 @@ $(document).ready(() => {
           success: function(response) {
             $(`#guest-list > #${id}`).remove();
 
-            console.log(`${nome_cognome} ${response}`);
+            console.log(`Ospite ${nome_cognome} ${response}`);
 
             $('.modal-confirm').html('');
             $('#content-confirm').hide();
 
-            toastr.success(`${nome_cognome} cancellato.`, 'Successo', { timeOut: 5000 });
+            toastr.success(`Ospite ${nome_cognome} cancellato.`, 'Successo', { timeOut: 5000 });
           },
           error: function(errorMessage) {
             console.log(errorMessage);
@@ -381,6 +378,34 @@ $(document).ready(() => {
       $('#no').click(function() {
         $('.modal-confirm').html('');
         $('#content-confirm').hide();
+      });
+    }
+  });
+
+  $('#numero_tavolo').keyup(function() {
+    let numero = $('#numero_tavolo').val();
+    if (numero != '') {
+      $.ajax({
+        type: 'GET',
+        url: 'api/table_check.php',
+        data: { numero: numero },
+        success: function(response) {
+          // console.log(`${response}`);
+          if (response != 'null') {
+            const result = JSON.parse(response);
+            console.log(`Il tavolo numero ${result.numero_tavolo} esiste già`);
+            toastr.warning(`Il tavolo numero ${result.numero_tavolo} esiste già`, 'Avviso', { timeOut: 5000 });
+          }
+
+          // $('.modal-confirm').html('');
+          // $('#content-confirm').hide();
+
+          // toastr.error(`${response}`, 'Avviso', { timeOut: 5000 });
+        },
+        error: function(errorMessage) {
+          console.log(errorMessage);
+          toastr.error(errorMessage, 'Avviso di errore', { timeOut: 5000 });
+        }
       });
     }
   });

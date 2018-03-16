@@ -4,7 +4,7 @@
 	$id = $_POST['id'];
 	
 	// Delete guest
-	$sql = "DELETE FROM fl_tavoli_commensali WHERE id='$id'";
+	$sql = "DELETE FROM fl_tavoli_commensali WHERE id='$id' AND evento_id='$evento_id'";
 	if (mysqli_query($conn, $sql)) {
 		echo "cancellato";
 	} else {

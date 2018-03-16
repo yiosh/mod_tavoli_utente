@@ -2,7 +2,7 @@
 
   require('../config/db.config.php');
 
-  $sql = "SELECT * FROM fl_tavoli_commensali";
+  $sql = "SELECT * FROM fl_tavoli_commensali WHERE evento_id='$evento_id'";
   $result = mysqli_query($conn, $sql);
 
   while($row = mysqli_fetch_assoc($result)){
@@ -11,7 +11,7 @@
 
   $data['utenti'] = $json;
 
-  $sql = "SELECT * FROM fl_tavoli";
+  $sql = "SELECT * FROM fl_tavoli  WHERE evento_id='$evento_id'";
   $result = mysqli_query($conn, $sql);
 
   while($row = mysqli_fetch_assoc($result)){

@@ -9,8 +9,11 @@
   require_once($_SERVER['DOCUMENT_ROOT'].'/fl_core/autentication.php');
   // require('../../fl_core/core.php');
   session_start();
-  $_SESSION['evento_id'] = 449;
 
+ 
+  if(isset($_GET['evento_id'])) $_SESSION['evento_id'] = check($_GET['evento_id']);
+  $evento_id = $_SESSION['evento_id'];
+  
   // $db_host = "localhost";
   // $db_user = "root";
   // $db_pass = "";

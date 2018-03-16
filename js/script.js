@@ -218,7 +218,7 @@ $(document).ready(() => {
             <div id="${response.id}" class="table" tavolo-nome="${response.nome_tavolo} ${response.numero_tavolo}">
               <div class="table-header">
                 <p class="table-id" hidden>${response.id}</p>
-                <p class="table-name">${response.nome_tavolo} ${response.numero_tavolo}</p>
+                <p class="table-name">${response.nome_tavolo} ${response.numero_tavolo_utente}</p>
                 <button id="delete${response.id}" type="button" title="Elimina tavolo" class="delete-btn">
                   <i class="fas fa-minus-circle"></i>
                 </button>

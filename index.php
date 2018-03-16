@@ -89,7 +89,7 @@
         <?php foreach($result_tavoli as $table) : ?>
           <div id="<?php echo $table['id']; ?>" class="table" tavolo-nome="<?php echo $table['nome_tavolo']." ".$table['numero_tavolo']; ?>">
             <div class="table-header">
-              <p class="table-name"><?php echo $table['nome_tavolo']." ".$table['numero_tavolo']; ?></p>
+              <p class="table-name"><?php echo $table['nome_tavolo']." ".$table['numero_tavolo_utente']; ?></p>
               <button id="delete<?php echo $guest['id'] ?>" type="button" title="Elimina tavolo" class="delete-btn">
                 <i class="fas fa-minus-circle"></i>
               </button>

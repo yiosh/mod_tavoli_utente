@@ -2,7 +2,7 @@
 
   require('../config/db.config.php');
 
-  $query_commensali = "SELECT * FROM fl_tavoli_commensali";
+  $query_commensali = "SELECT * FROM fl_tavoli_commensali WHERE evento_id='$evento_id'";
   $result_commensali = mysqli_query($conn, $query_commensali);
 
   while($row = mysqli_fetch_assoc($result_commensali)){

@@ -3,7 +3,9 @@
 
   $numero = $_GET['numero'];
 
-  $sql = "SELECT numero_tavolo FROM fl_tavoli WHERE numero_tavolo ='$numero'";
+  $sql = "SELECT `numero_tavolo_utente` FROM fl_tavoli WHERE numero_tavolo_utente ='.$numero.' AND evento_id ='$evento_id'";
+
+  // $sql = "SELECT numero_tavolo FROM fl_tavoli WHERE numero_tavolo ='$numero'";
   if ($result = mysqli_query($conn, $sql)) {
     
     $result = mysqli_fetch_assoc($result);
@@ -11,7 +13,7 @@
   } else {
     echo "Tavolo Errore. MySQli Error: " . mysqli_error($conn);
   }
-  
+
 
   mysqli_close($conn);
 // WHERE numero_tavolo = '$numero'

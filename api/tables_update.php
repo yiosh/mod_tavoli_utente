@@ -4,10 +4,10 @@
   $tavolo_id = $_POST['tavolo_id'];
   $user_id = $_POST['user_id'];
 
-  $sql = "UPDATE fl_tavoli_commensali SET tavolo_id='$tavolo_id', data_aggiornamento=(now()) WHERE id='$user_id'";
+  $sql = "UPDATE fl_tavoli_commensali SET tavolo_id='$tavolo_id', data_aggiornamento=(now()) WHERE id='$user_id' AND evento_id='$evento_id'";
 
   if ($result = mysqli_query($conn, $sql)) {
-    $sql = "SELECT * FROM fl_tavoli_commensali WHERE id='$user_id'";
+    $sql = "SELECT * FROM fl_tavoli_commensali WHERE id='$user_id' AND evento_id='$evento_id'";
 
     if ($result = mysqli_query($conn, $sql)) {
       $json = mysqli_fetch_assoc($result);
